@@ -45,7 +45,7 @@
                         <a data-toggle="modal" href="#modal_connexion">Se connecter</a>
                     </li>
                     <li>
-                        <a href="{{ url('/register') }}"><b><span>S'inscrire</span></b></a>
+                        <a href="{{ url('/register') }}"><b>S'inscrire</b></a>
                     </li>
                 @endif
 

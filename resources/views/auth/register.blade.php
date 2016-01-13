@@ -9,6 +9,9 @@
 @stop
 
 @section('body')
+
+    @include('breadcrumbs', array('breadcrumb_title' => 'Inscription'))
+
     <div class="container">
         <div class="row mar-b-50">
             <form class="form-signin" method="POST" action="{{ url('/register') }}">
@@ -35,13 +38,5 @@
 
 
 @section('script')
-
-    @if(count($errors) > 0 && is_null(old('name')))
-        <script>
-            $(function() {
-                $('#myModal').modal('show');
-            });
-        </script>
-    @endif
 
 @stop
