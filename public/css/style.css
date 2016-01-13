@@ -61,7 +61,7 @@ p { line-height: 22px }
 .head-section .navbar-default { background-color: #fff }
 .head-section .nav li a,
 .head-section .nav li.active ul.dropdown-menu li a {
-    color: rgb(0,58,129)!important;
+    color: rgb(0,58,129);
     font-size: 18px;
     font-weight: 300;
     background: none;
@@ -87,7 +87,7 @@ ul.dropdown-menu { border: none }
 .head-section .navbar-default .navbar-nav > .open > a:hover,
 .head-section .navbar-default .navbar-nav > .open > a:focus {
     color: #fff;
-    background-color: rgb(235,105,9);
+    background-color: rgb(0,58,129);
     -webkit-transition: all .3s ease;
     -moz-transition: all .3s ease;
     -ms-transition: all .3s ease;
@@ -1289,7 +1289,6 @@ ul.tag li a {
 }
 .copyright {
     color: #fff;
-    padding-top: 15px;
 }
 .page-footer { padding: 0% 13% }
 .page-footer h1 { padding-left: 4% }

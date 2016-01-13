@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('title')
-    3D Print
+    3DPaper - Réinitialisation du mot de passe
 @stop
 
 @section('header')

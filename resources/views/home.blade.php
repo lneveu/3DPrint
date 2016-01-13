@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('title')
-    3D Print
+    3DPaper
 @stop
 
 @section('header')
@@ -171,7 +171,7 @@
         {{ var_dump($errors) }}
         <script>
             $(function() {
-                $('#myModal').modal('show');
+                $('#modal_connexion').modal('show');
             });
         </script>
     @endif

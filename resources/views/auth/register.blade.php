@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('title')
-    3D Print
+    3DPaper - Inscription
 @stop
 
 @section('header')

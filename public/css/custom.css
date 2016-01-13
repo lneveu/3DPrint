@@ -1,10 +1,25 @@
-a span{
-    color: rgb(235,105,9);
+/* HEAD - NAVBAR */
+.head-section .nav li a span {
+  color: rgb(235,105,9);
 }
 
-a:hover span{
-    color: #fff;
+.head-section .nav li a:hover span {
+  color: #fff;
 }
+/* end HEAD - NAVBAR */
+
+/* FOOTER */
+.legal {
+  color: #fff;
+  padding-top: 15px;
+}
+
+.legal a {
+  color: #fff;
+  text-decoration: underline;
+}
+/* end FOOTER */
+
 .navbar-default .navbar-brand .orange{
     color: rgb(235,105,9);
 }
