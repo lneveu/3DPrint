@@ -38,7 +38,7 @@ class Authenticate
             if ($request->ajax()) {
                 return response('Unauthorized.', 401);
             } else {
-                return redirect()->guest('/');
+                return redirect('/')->with('login', 'Not logged in');
             }
         }
 

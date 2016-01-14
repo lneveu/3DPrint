@@ -1,5 +1,5 @@
 <!-- Connexion Modal -->
-<div aria-hidden="true" aria-labelledby="modal_connexion" role="dialog" tabindex="-1" id="modal_connexion" class="modal fade">
+<div aria-hidden="true" aria-labelledby="login" role="dialog" tabindex="-1" id="login" class="modal fade">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -24,6 +24,13 @@
                                 <a data-toggle="modal" href="{{ url('password/email') }}"> Mot de passe oublié ?</a>
                             </span>
                         </label>
+                        <div class="margin-bottom">
+                            Pas encore inscrit ?
+                            <span class="pull-right">
+                                 <a href="{{ url('/register') }}">Créer un compte gratuitement</a>
+                            </span>
+                        </div>
+
                         <button class="btn btn-lg btn-login btn-block" type="submit">Se connecter</button>
                     </div>
 
@@ -36,10 +43,10 @@
 <!-- modal -->
 
 
-@if(count($errors) > 0)
+@if((($errors->default->has('email') || $errors->default->has('password')) && is_null(old('name'))) || session('login'))
     <script>
         $(function() {
-            $('#modal_connexion').modal('show');
+            $('#login').modal('show');
         });
     </script>
 @endif

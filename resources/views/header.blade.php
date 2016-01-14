@@ -18,7 +18,7 @@
                     <a href="{{ url('/') }}">Notre expertise</a>
                 </li>
                 <li>
-                    <a href="{{ url('/') }}"><span>Imprimer votre objet</span></a>
+                    <a href="{{ url('/upload-model') }}"><span>Imprimer votre objet</span></a>
                 </li>
                 @if(Auth::check())
                     <li class="dropdown">
@@ -42,7 +42,7 @@
                     </li>
                 @else
                     <li>
-                        <a data-toggle="modal" href="#modal_connexion">Se connecter</a>
+                        <a data-toggle="modal" href="#login">Se connecter</a>
                     </li>
                     <li>
                         <a href="{{ url('/register') }}"><b>S'inscrire</b></a>

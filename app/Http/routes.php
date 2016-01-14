@@ -15,13 +15,17 @@ Route::get('/', function () {
     return view('home');
 });
 
-// Utilisateurs connectés seulement
+// Utilisateurs connectï¿½s seulement
 Route::group(['middleware' => 'auth'], function () {
     // Logout
     Route::get('/logout', 'Auth\AuthController@getLogout');
+
+    // Upload model
+    Route::get('/upload-model', 'ModelController@getUploadModel');
+    Route::post('/upload-model', 'ModelController@postUploadModel');
 });
 
-// Utilisateurs non connectés seulement
+// Utilisateurs non connectï¿½s seulement
 Route::group(['middleware' => 'guest'], function () {
     // Register
     Route::get('/register', 'Auth\AuthController@getRegister');
