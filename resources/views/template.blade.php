@@ -57,7 +57,6 @@
 
 @include('footer')
 
-@include('login')
 
 <!-- js placed at the end of the document so the pages load faster-->
 <script src="/js/jquery-1.8.3.min.js"></script>
@@ -86,7 +85,7 @@
 
 <!--common script for all pages-->
 <script src="/js/common-scripts.js"></script>
-
+@include('login')
 @yield('script')
 
 </body>

@@ -34,3 +34,12 @@
     </div>
 </div>
 <!-- modal -->
+
+
+@if(count($errors) > 0)
+    <script>
+        $(function() {
+            $('#modal_connexion').modal('show');
+        });
+    </script>
+@endif
