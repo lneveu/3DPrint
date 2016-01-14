@@ -1,3 +1,20 @@
+/* ALL */
+.btn.btn-orange {
+  background-color: rgb(235,105,9);
+  color: #FFFFFF;
+}
+
+.btn.btn-orange:hover {
+  background-color: rgba(235,105,9,0.80);
+}
+
+.btn-big {
+  margin: 30px 0 0 0;
+  padding: 10px 50px;
+  font-size: 200%;
+}
+/* ALL end */
+
 /* HEAD - NAVBAR */
 .head-section .nav li a span {
   color: rgb(235,105,9);
@@ -19,6 +36,50 @@
   text-decoration: underline;
 }
 /* end FOOTER */
+
+/* HOME */
+.upload_block_home {
+  padding-bottom: 50px;
+  text-align: center;
+}
+
+.upload_block_home h3 {
+    text-align: center;
+    margin-top: 50px;
+    font-weight: 400;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+.infos_block_home  {
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+
+.infos_block_home .col_img {
+  padding-top: 30px;
+}
+
+.infos_block_home img {
+  display: block;
+  height: 240px;
+  width: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.infos_block_home p{
+  text-align: justify;
+}
+.newsletter_block_home {
+  padding: 20px;
+  text-align: center;
+}
+
+.newsletter_block_home h4 {
+  padding-right: 10px;
+}
+/* HOME end */
 
 .navbar-default .navbar-brand .orange{
     color: rgb(235,105,9);

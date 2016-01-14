@@ -5,7 +5,7 @@
 	position: relative;
 	margin: 0 auto;
 	overflow: hidden;
-	background: transparent url(../../img/parallax-slider/images/main-bg.jpg) repeat 0% 0%;
+	background: transparent url(../../img/parallax-slider/images/bg.jpg) repeat 0% 0%;
 	border-top: 1px solid #eee;
 	border-bottom: 1px solid #eee;
 	/*box-shadow: 0px 1px 1px rgba(0,0,0,0.2), 0px -2px 1px #fff;*/
@@ -22,7 +22,7 @@
 	height: 100%;
 	top: 0px;
 	left: 0px;
-	font-family: 'BebasNeueRegular', 'Arial Narrow', Arial, sans-serif;
+	font-family: 'Lato', sans-serif;
 	text-align: left;
 }
 .da-slide-current{
@@ -96,13 +96,13 @@
 	padding: 10px 5px;
 	font-size: 18px;
 	line-height: 30px;
-	width: 120px;
+	width: 175px;
 	text-align: center;
-	background: #48cfad;
+	background: rgb(235, 105, 9);
 	margin-left: -8%;
 }
 .da-slide .da-link:hover{
-	background: rgba(72, 207, 173, 0.80);
+	background: rgba(235, 105, 9, 0.80);
 }
 .da-dots{
 	width: 100%;

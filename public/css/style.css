@@ -180,7 +180,7 @@ ul.dropdown-menu { border: none }
     font-weight: 300;
     text-transform: uppercase;
     margin-top: 40px;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 .feature-head p {
     color: #8a8b8b;
@@ -1448,7 +1448,7 @@ ul.page-footer-list li i { padding-right: 10px }
     background-color: #fafafa;
 }
 .bg-lg { background:#f9f9f3  }
-.gray-bg { background: #f9f9f3 }
+.gray-bg { background:rgb(234, 237, 241) }
 .property h1 {
     color: #475168;
     font-size: 24px;
@@ -1780,6 +1780,7 @@ ul#filters > .active > span {
     border: 1px solid #eee;
 }
 .form-control {
+    color: #000000;
     border: 1px solid #d9d9d9;
     border-radius: 2px;
 }
