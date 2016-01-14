@@ -242,15 +242,6 @@
 
 @section('script')
 
-    @if(count($errors) > 0)
-        {{ var_dump($errors) }}
-        <script>
-            $(function() {
-                $('#modal_connexion').modal('show');
-            });
-        </script>
-    @endif
-
     <script>
         $('a.info').tooltip();
 
