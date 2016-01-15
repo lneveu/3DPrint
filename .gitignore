@@ -3,6 +3,6 @@
 Homestead.yaml
 Homestead.json
 .env
-.idea
-.stl
+.idea/
+storage/models/*
 auth.json
