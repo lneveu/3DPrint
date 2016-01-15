@@ -11,11 +11,12 @@
 
                     {!! csrf_field() !!}
                     <div class="login-wrap">
-                        @if($errors->default->has('email') && is_null(old('name')))<p class="error">{{ $errors->default->first('email') }}</p>@endif
-                        <input type="email" class="form-control @if($errors->has('email') && is_null(old('name'))){{ "error-border" }}@endif" name="email" placeholder="E-mail" value="{{ old('email') }}">
+                        <input type="hidden" name="login" value="1">
+                        @if($errors->default->has('email') && old('login'))<p class="error">{{ $errors->default->first('email') }}</p>@endif
+                        <input type="email" class="form-control @if($errors->has('email') && old('login')){{ "error-border" }}@endif" name="email" placeholder="E-mail" value="{{ old('email') }}">
 
-                        @if($errors->default->has('password') && is_null(old('name')))<p class="error">{{ $errors->default->first('password') }}</p>@endif
-                        <input type="password" name="password" class="form-control @if($errors->has('password') && is_null(old('name'))){{ "error-border" }}@endif" placeholder="Mot de passe">
+                        @if($errors->default->has('password') && old('login'))<p class="error">{{ $errors->default->first('password') }}</p>@endif
+                        <input type="password" name="password" class="form-control @if($errors->has('password') && old('login')){{ "error-border" }}@endif" placeholder="Mot de passe">
 
 
                         <label class="checkbox">
@@ -42,8 +43,7 @@
 </div>
 <!-- modal -->
 
-
-@if((($errors->default->has('email') || $errors->default->has('password')) && is_null(old('name'))) || session('login'))
+@if(old('login') || old('email') || session('login'))
     <script>
         $(function() {
             $('#login').modal('show');

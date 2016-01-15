@@ -9,6 +9,14 @@
 @stop
 
 @section('body')
+    @if(session()->has('status'))
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <p class="alert alert-success text-center">{{ session()->get('status') }}</p>
+        </div>
+        <div class="col-md-4"></div>
+
+    @endif
     <!-- Sequence Modern Slider -->
     <div id="da-slider" class="da-slider">
       <!-- Slide 1 -->
@@ -98,14 +106,6 @@
     <div class="container">
         <div class="row mar-b-50">
             <div class="col-md-12">
-                @if(session()->has('status'))
-                    <div class="col-md-4"></div>
-                    <div class="col-md-4">
-                        <p class="alert alert-success text-center">{{ session()->get('status') }}</p>
-                    </div>
-                    <div class="col-md-4"></div>
-
-                @endif
                 <div class="text-center feature-head wow fadeInDown">
                     <h1 class="">
                       La première plateforme d'impression 3D papier !
