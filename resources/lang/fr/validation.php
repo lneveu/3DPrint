@@ -12,6 +12,7 @@ return [
     | such as the size rules. Feel free to tweak each of these messages.
     |
     */
+    "allowed_extension"    =>"Le champ :attribute doit être de type OBJ ou STL.",
 
     "accepted"             => "Le champ :attribute doit être accepté.",
     "active_url"           => "Le champ :attribute n'est pas une URL valide.",

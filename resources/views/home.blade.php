@@ -101,7 +101,7 @@
                 @if(session()->has('status'))
                     <div class="col-md-4"></div>
                     <div class="col-md-4">
-                        <p class="alert-success text-center">{{ session()->get('status') }}</p>
+                        <p class="alert alert-success text-center">{{ session()->get('status') }}</p>
                     </div>
                     <div class="col-md-4"></div>
 
@@ -170,7 +170,7 @@
             <h4>
               Une fois déposé, nous analyserons automatiquement et gratuitement le modèle pour vérifier sa faisabilité.
             </h4>
-            <a href="{{ url('/') }}" class="btn btn-orange btn-lg btn-big">
+            <a href="{{ url('/upload-model') }}" class="btn btn-orange btn-lg btn-big">
               Déposer votre modèle
             </a>
           </div>

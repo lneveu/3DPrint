@@ -24,7 +24,7 @@ class UploadModelRequest extends Request
     public function rules()
     {
         return [
-            'file' => 'required|mimes:stl,obj',
+            'file' => 'required|allowed_extension:stl,obj'
         ];
     }
 }

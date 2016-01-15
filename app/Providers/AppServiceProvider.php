@@ -13,7 +13,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        \Validator::extend('allowed_extension', function($attribute, $value, $parameters, $validator)
+        {
+            $extension = strtolower($value->getClientOriginalExtension());
+            $allowed_extensions_array = array_map('strtolower', $parameters);
+
+            return in_array($extension,$allowed_extensions_array);
+
+        });
     }
 
     /**
