@@ -40,7 +40,7 @@ class ModelController extends Controller
         $result = curl_exec($ch);
         $result = json_decode($result);
 
-       if($result !== false)
+       if($result !== null)
        {
            switch($result->code)
            {
@@ -64,6 +64,8 @@ class ModelController extends Controller
 
                // Bad request
                case '-1' :
+                   // Delete model
+                   unlink($path.$fileName);
                    return redirect()->back()->with(['error' => 'Erreur interne, veuillez contacter un administrateur.[Error -1 : bad request]']);
 
                // File does not exist
@@ -74,7 +76,10 @@ class ModelController extends Controller
                    return redirect()->back()->with(['error' => 'Erreur interne, veuillez contacter un administrateur.']);
            }
        }
+
         // No result
+        // Delete model
+        unlink($path.$fileName);
         return redirect()->back()->with(['error' => 'Erreur interne, veuillez contacter un administrateur.']);
 
     }
