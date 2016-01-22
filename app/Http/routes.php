@@ -23,6 +23,9 @@ Route::group(['middleware' => 'auth'], function () {
     // Upload model
     Route::get('/upload-model', 'ModelController@getUploadModel');
     Route::post('/upload-model', 'ModelController@postUploadModel');
+
+    // Edit model
+    Route::get('/edit-model/{modelId}', 'ModelController@getEditModel')->where('modelId', '[0-9]+');;
 });
 
 // Utilisateurs non connect�s seulement

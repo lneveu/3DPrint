@@ -16,7 +16,7 @@ module.exports =
         {
             if(err || !stats.isFile())
             {
-                cb({ "status" : "invalid", "code" : 1 });
+                cb({ "status" : "file not exist", "code" : 1 });
             }
             else
             {
@@ -45,16 +45,17 @@ var stl_normalize = function(file, cb)
     // call python scripts
     PythonShell.run('stl_normalize.py', options, function (err, results)
     {
+        console.log(err);
         // TODO séparer et identifier les différents types d'erreurs
         if (err) // invalid model
         {
             console.log('INVALID - File "' + file + '" contains a non-manifold model');
-            cb({"status" : "invalid", "code" : 2 });
+            cb({"status" : "invalid model", "code" : 2 });
         }
         else // valid model
         {
             console.log('VALID - File "' + file + '"');
-            cb({"status" : "valid", "code" : 0 });
+            cb({"status" : "valid model", "code" : 0 });
         }
     });
 };

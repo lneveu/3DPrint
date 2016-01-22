@@ -136,3 +136,10 @@ body {
 .center{
     text-align:center;
 }
+
+#spinArea{
+    width:100%;
+    height:200px;
+    margin: 0 auto;
+
+}
