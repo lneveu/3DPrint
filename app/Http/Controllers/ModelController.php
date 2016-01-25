@@ -14,17 +14,31 @@ class ModelController extends Controller
 
     public function postUploadModel(\App\Http\Requests\UploadModelRequest $request)
     {
-        // Save file
+        // Retrieve file
         $file = $request->file('file');
+        $fileName = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
+        $originalName = $fileName;
         $extension = $request->file('file')->getClientOriginalExtension();
-        $fileName = md5($file).'.'.$extension;
-        $path = storage_path().'/models/';
+        $fileName .= ".".$extension;
+
+        $id = \Auth::user()->id;
+        $path = storage_path().'/models/'.$id.'/';
+        if(!is_dir($path)) mkdir($path);
+
+        // Rename if file exists
+        $i = 1;
+        while(file_exists($path.$fileName))
+        {
+            $actual_name = $originalName.$i;
+            $fileName = $actual_name.".".$extension;
+            $i++;
+        }
+
+        // Save file
         $request->file('file')->move($path, $fileName);
 
 
-
         // Validate file through the validator local server
-
         $data = array("file" => $path.$fileName);
         $data_string = json_encode($data);
 
@@ -50,7 +64,7 @@ class ModelController extends Controller
                    $model = new Model();
                    $model->user_id = $user->id;
                    $model->file = $path.$fileName;
-                   $model->title = $file->getClientOriginalName();
+                   $model->title = $fileName;
 
                    $model->save();
 
