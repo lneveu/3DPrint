@@ -6,3 +6,4 @@ Homestead.json
 .idea/
 storage/models/*
 auth.json
+.xml
