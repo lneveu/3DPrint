@@ -85,7 +85,7 @@
         };
         var target = document.getElementById('spinArea');
         var spinner = new Spinner(opts);
-        
+
         $('#send').on('click', function(){
             $('#spin').modal('show');
             spinner.spin(target);
