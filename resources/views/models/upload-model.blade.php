@@ -28,24 +28,44 @@
                     <br/>
                     <button class="btn btn-lg btn-login btn-block" type="submit" id="send">Envoyer</button>
                 </div>
-                <div class="row">
-                    <div class="col-md-4" id="spinArea"></div>
-                </div>
-                <div class="row">
-                    <h5 class="center">En déposant des fichiers sur <b>3DPaper</b>, vous acceptez nos <a href="{{ url('/') }}">conditions générales d'utilisation</a>.</h5>
-                </div>
+                <h5 class="center">En déposant des fichiers sur <b>3DPaper</b>, vous acceptez nos <a href="{{ url('/') }}">conditions générales d'utilisation</a>.</h5>
             </form>
         </div>
     </div>
+
+
+    <!-- Spin Modal -->
+    <div aria-hidden="true" aria-labelledby="spin" role="dialog" tabindex="-1" id="spin" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Validation</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-12" id="spinArea"></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="center">Validation du modèle en cours...</h4>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal -->
 @stop
 
 @section('script')
     <script>
         var opts = {
             lines: 13 // The number of lines to draw
-            , length: 28 // The length of each line
-            , width: 14 // The line thickness
-            , radius: 42 // The radius of the inner circle
+            , length: 13 // The length of each line
+            , width: 7 // The line thickness
+            , radius: 24 // The radius of the inner circle
             , scale: 1 // Scales overall size of the spinner
             , corners: 1 // Corner roundness (0..1)
             , color: '#000' // #rgb or #rrggbb or array of colors
@@ -67,6 +87,7 @@
         var spinner = new Spinner(opts);
 
         $('#send').on('click', function(){
+            $('#spin').modal('show');
             spinner.spin(target);
         })
     </script>
