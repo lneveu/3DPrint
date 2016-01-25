@@ -3,8 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f70f6476-b18c-4cdc-bf1a-169a8de4bb74" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/login.blade.php" afterPath="$PROJECT_DIR$/resources/views/login.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/resources/views/models/upload-model.blade.php" afterPath="$PROJECT_DIR$/resources/views/models/upload-model.blade.php" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="3DPrint.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -46,11 +44,11 @@
       <file leaf-file-name="login.blade.php" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/login.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.34228188">
-              <caret line="18" column="137" selection-start-line="18" selection-start-column="137" selection-end-line="18" selection-end-column="137" />
+            <state vertical-scroll-proportion="0.3803132">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding>
-                <marker date="1453751724953" expanded="true" signature="2477:2538" placeholder="..." />
-                <marker date="1453751724953" expanded="true" signature="2489:2537" placeholder="..." />
+                <marker date="1453751922610" expanded="true" signature="2495:2556" placeholder="..." />
+                <marker date="1453751922610" expanded="true" signature="2507:2555" placeholder="..." />
               </folding>
             </state>
           </provider>
@@ -2052,11 +2050,11 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/login.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.34228188">
-          <caret line="18" column="137" selection-start-line="18" selection-start-column="137" selection-end-line="18" selection-end-column="137" />
+        <state vertical-scroll-proportion="0.3803132">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding>
-            <marker date="1453751724953" expanded="true" signature="2477:2538" placeholder="..." />
-            <marker date="1453751724953" expanded="true" signature="2489:2537" placeholder="..." />
+            <marker date="1453751922610" expanded="true" signature="2495:2556" placeholder="..." />
+            <marker date="1453751922610" expanded="true" signature="2507:2555" placeholder="..." />
           </folding>
         </state>
       </provider>
