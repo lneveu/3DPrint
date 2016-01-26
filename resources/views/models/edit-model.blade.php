@@ -97,7 +97,7 @@
                     <div class="form-group">
                         <div class="col-md-3">
                             <br/>
-                            <a href="{{ url('/delete-model/'.$model->id) }}" class="btn btn-danger" role="button" id="delete"><span class="glyphicon glyphicon-remove white" aria-hidden="true"></span>  Supprimer le modèle</a>
+                            <a href="{{ url('/delete-model/'.$model->id) }}" class="btn btn-danger" role="button" id="delete"><span class="glyphicon glyphicon-remove white" aria-hidden="true"></span>  Supprimer</a>
                         </div>
 
                         <div class="col-md-3"></div>
