@@ -38,6 +38,13 @@
 
     <!-- Custom -->
     <link href="/css/custom.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/nouislider.min.css"/>
+    <link rel="stylesheet" href="/css/nouislider.pips.css"/>
+    <link rel="stylesheet" href="/css/nouislider.tooltips.css"/>
+    <link href="/madeleine/src/css/Madeleine.css" rel="stylesheet">
+
+
+
 
     <!-- HTML5 shim and Respond.js IE8 support of HTML5 tooltipss and media queries -->
     <!--[if lt IE 9]>
@@ -70,6 +77,13 @@
 <script src="/js/jquery.easing.min.js"></script>
 <script src="/js/link-hover.js"></script>
 <script src="/js/superfish.js"></script>
+<script src="/js/nouislider.min.js"></script>
+
+<script src="/madeleine/src/lib/stats.js"></script>
+<script src="/madeleine/src/lib/detector.js"></script>
+<script src="/madeleine/src/lib/three.min.js"></script>
+<script src="/madeleine/src/Madeleine.js"></script>
+
 <script type="text/javascript" src="/js/parallax-slider/jquery.cslider.js"></script>
 <script type="text/javascript">
     $(function() {

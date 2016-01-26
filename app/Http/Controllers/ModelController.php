@@ -3,6 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Model;
+use Carbon\Carbon;
 
 class ModelController extends Controller
 {
@@ -100,8 +101,33 @@ class ModelController extends Controller
 
     public function getEditModel($id)
     {
+
         $model = Model::findOrFail($id);
-        return view('models.edit-model')->with(array('model' =>  $model));
+        $dateUpdate["day"] = $model->updated_at->day;
+        $dateUpdate["month"] = $this->monthToString($model->updated_at->month);
+        $dateUpdate["year"] = $model->updated_at->year;
+
+        return view('models.edit-model')->with(array('model' =>  $model, 'dateUpdate' => $dateUpdate));
+    }
+
+    private function monthToString($month)
+    {
+        switch($month)
+        {
+            case 1 : return "Janvier";
+            case 2 : return "Février";
+            case 3 : return "Mars";
+            case 4 : return "Avril";
+            case 5 : return "Mai";
+            case 6 : return "Juin";
+            case 7 : return "Juillet";
+            case 8 : return "Août";
+            case 9 : return "Septembre";
+            case 10 : return "Octobre";
+            case 11 : return "Novembre";
+            case 12 : return "Décembre";
+
+        }
     }
 
 }
