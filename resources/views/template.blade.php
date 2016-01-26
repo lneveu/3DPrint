@@ -41,7 +41,6 @@
     <link rel="stylesheet" href="/css/nouislider.min.css"/>
     <link rel="stylesheet" href="/css/nouislider.pips.css"/>
     <link rel="stylesheet" href="/css/nouislider.tooltips.css"/>
-    <link href="/madeleine/src/css/Madeleine.css" rel="stylesheet">
 
 
 
@@ -79,10 +78,9 @@
 <script src="/js/superfish.js"></script>
 <script src="/js/nouislider.min.js"></script>
 
-<script src="/madeleine/src/lib/stats.js"></script>
-<script src="/madeleine/src/lib/detector.js"></script>
-<script src="/madeleine/src/lib/three.min.js"></script>
-<script src="/madeleine/src/Madeleine.js"></script>
+<script src="/thingiview/javascripts/Three.js"></script>
+<script src="/thingiview/javascripts/plane.js"></script>
+<script src="/thingiview/javascripts/thingiview.js"></script>
 
 <script type="text/javascript" src="/js/parallax-slider/jquery.cslider.js"></script>
 <script type="text/javascript">

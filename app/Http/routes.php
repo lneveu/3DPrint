@@ -26,6 +26,13 @@ Route::group(['middleware' => 'auth'], function () {
 
     // Edit model
     Route::get('/edit-model/{modelId}', 'ModelController@getEditModel')->where('modelId', '[0-9]+');;
+
+    // Get file
+    Route::get('/file/{modelId}', 'ModelController@getFile')->where('modelId', '[0-9]+');
+
+    // Edit title
+    Route::post('/edit-model/edit-title', 'AjaxController@postEditTitle');
+
 });
 
 // Utilisateurs non connect�s seulement

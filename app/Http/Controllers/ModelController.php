@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Models\Model;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class ModelController extends Controller
 {
@@ -66,16 +68,17 @@ class ModelController extends Controller
                    $model->user_id = $user->id;
                    $model->file = $path.$fileName;
                    $model->title = $fileName;
+                   $model->scale = 1;
 
                    $model->save();
 
-                   return redirect('/edit-model/'.$model->id)->with(['ok' => 'Votre modèle à bien été validé']);
+                   return redirect('/edit-model/'.$model->id);
 
                // Invalid model
                case '2' :
                    // Delete model
                    unlink($path.$fileName);
-                   return redirect()->back()->with(['error' => 'Votre modèle n\'est pas valide, il contient des arrêtes non manifolds. Veuiller le corriger et le transférer à nouveau.']);
+                   return redirect()->back()->with(['error' => 'Votre modèle n\'est pas valide. Veuiller le corriger et le transférer à nouveau.']);
 
                // Bad request
                case '-1' :
@@ -128,6 +131,16 @@ class ModelController extends Controller
             case 12 : return "Décembre";
 
         }
+    }
+
+    // Return the file given the model id
+    public function getFile($id)
+    {
+        $model = Model::findOrFail($id);
+        if($model->user_id !== \Auth::user()->id) abort(404);
+
+        return response()->download($model->file);
+
     }
 
 }
