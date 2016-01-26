@@ -83,7 +83,29 @@
                             <label>Volume</label>
                             <p class="form-control-static">{{ $model->volume }} cm³</p>
                         </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <p class="form-control-static"><b class="black">Prix unitaire : {{ $model->price }} €</b></p>
+                        </div>
 
+                        <div class="col-md-3"></div>
+
+                        <div class="col-md-3">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-3">
+                            <br/>
+                            <a href="{{ url('/delete-model/'.$model->id) }}" class="btn btn-danger" role="button" id="delete"><span class="glyphicon glyphicon-remove white" aria-hidden="true"></span>  Supprimer le modèle</a>
+                        </div>
+
+                        <div class="col-md-3"></div>
+
+                        <div class="col-md-3">
+                            <br/>
+                            <input type="submit" class="btn btn-lg btn-login" value="Imprimer">
+                        </div>
                     </div>
 
                 </form>
@@ -93,8 +115,8 @@
             <div class="col-md-4">
                 <div id="viewer" style="width:400px;height:400px"></div>
             </div>
-
         </div>
+
     </div>
 @stop
 
@@ -133,8 +155,15 @@
             inputFormat.value = values[handle];
         });
 
-        inputFormat.addEventListener('change', function(){
+        inputFormat.addEventListener('change', function(e){
             softSlider.noUiSlider.set(this.value);
+        });
+
+        inputFormat.addEventListener('keypress', function(e){
+            if (e.keyCode == 13) {
+                softSlider.noUiSlider.set(this.value);
+                e.preventDefault();
+            }
         });
 
         $('#input-title').on('change keyup', function(){
@@ -151,6 +180,13 @@
             .done(function( data ) {
                 $('#update-title').text('Modifications enregistrées')
             });
+        });
+
+        $('#delete').on('click',function(e){
+            var answer=confirm('Voulez vous vraiment supprimer ce modèle ?');
+            if(!answer){
+                e.preventDefault();
+            }
         });
 
 

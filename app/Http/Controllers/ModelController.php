@@ -137,9 +137,19 @@ class ModelController extends Controller
     public function getFile($id)
     {
         $model = Model::findOrFail($id);
-        if($model->user_id !== \Auth::user()->id) abort(404);
-
         return response()->download($model->file);
+
+    }
+
+    public function getDeleteModel($id)
+    {
+        $model = Model::findOrFail($id);
+        unlink($model->file);
+        $model->delete();
+
+        return redirect('/')->with(['ok' => 'Votre modèle a bien été supprimé.']);
+
+
 
     }
 
