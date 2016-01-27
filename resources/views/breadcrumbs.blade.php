@@ -9,19 +9,19 @@
       </div>
       <div class="col-lg-8 col-sm-8">
         <ol class="breadcrumb pull-right">
-          <!--<li>
-            <a href="#">
-              Home
-            </a>
-          </li>
-          <li>
-            <a href="#">
-              Features
-            </a>
-          </li>
-          <li class="active">
-            Typography
-          </li>-->
+          @foreach($breadcrumb_list as $item)
+            @if($item == end($breadcrumb_list))
+            <li class="active">
+              {{$item[0]}}
+            </li>
+            @else
+            <li>
+              <a href="{{ url($item[1]) }}">
+                {{$item[0]}}
+              </a>
+            </li>
+            @endif
+          @endforeach
         </ol>
       </div>
     </div>

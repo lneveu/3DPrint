@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('title')
-    3DPaper
+    3DPaper - Page introuvable
 @stop
 
 @section('header')
