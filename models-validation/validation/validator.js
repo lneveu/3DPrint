@@ -19,10 +19,12 @@ var MAX_DIM =
 // min dimensions (mm)
 var MIN_DIM =
 {
-  'length'   : 0.1
-  , 'width'  : 0.1
-  , 'height' : 0.1
+  'length'   : 1
+  , 'width'  : 1
+  , 'height' : 1
 };
+
+var PRICE_MM3 = 0.001; // 1mm3 = 0.001€
 
 module.exports =
 {
@@ -49,7 +51,6 @@ module.exports =
                       {
                         verif_dimensions(file, opts, function(result) // verif and get dimensions
                         {
-                          result.opts = opts; // add scale & unit
                           cb(result);
                         });
                       }
@@ -87,7 +88,6 @@ module.exports =
           {
             verif_dimensions(file, opts, function(result) // verif and get dimensions
             {
-              result.opts = opts; // add scale & unit
               cb(result);
             });
           }
@@ -125,12 +125,13 @@ var verif_nonmanifold = function(file, cb)
 };
 
 /**
- * Check and return dimensions
+ * Check and return dimensions (rescale model if needed)
  */
 var verif_dimensions = function(file, opts, cb)
 {
   var ext      = path.extname(file)
     , geometry = null
+    , price    = null
     ;
 
   if(ext.toLowerCase() === '.stl')
@@ -148,14 +149,26 @@ var verif_dimensions = function(file, opts, cb)
     }
 
     var dim = applyScale(getDimensions(geometry), opts);
+    var maxminscale = getMinMaxScale(dim);
 
-    if(dim.length < MAX_DIM.length && dim.width < MAX_DIM.width && dim.height < MAX_DIM.height)
+    if(dim.length > MAX_DIM.length || dim.width > MAX_DIM.width || dim.height > MAX_DIM.height) // model is too big
     {
-      cb({ "status" : "valid model", "code" : 0, "dimensions" : dim });
+      opts.scale = maxminscale.max;
+      dim = applyScale(dim, opts);
+      price = calculatePrice(dim.volume);
+      cb({ "status" : "valid model after rescale (too big)", "code" : 2, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+    }
+    else if(dim.length < MIN_DIM.length || dim.width < MIN_DIM.width || dim.height < MIN_DIM.height) // model is too small
+    {
+      opts.scale = maxminscale.min;
+      dim = applyScale(dim, opts);
+      price = calculatePrice(dim.volume);
+      cb({ "status" : "valid model after rescale (too sall)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else
     {
-      cb({ "status" : "invalid model - dimensions are not valid", "code" : -5, "dimensions" : dim });
+      price = calculatePrice(dim.volume);
+      cb({ "status" : "valid model", "code" : 0, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
     }
   }
   /*else if(ext.toLowerCase() === '.obj')
@@ -199,8 +212,42 @@ var applyScale = function(dim, opts)
   newDim.length = dim.length * unit_scale * opts.scale;
   newDim.width  = dim.width * unit_scale * opts.scale;
   newDim.height = dim.height * unit_scale * opts.scale;
-  newDim.area   = dim.area * Math.pow(unit_scale * opts.scale,2);
-  newDim.volume = dim.volume * Math.pow(unit_scale * opts.scale,3);
+  newDim.area   = round2(dim.area * Math.pow(unit_scale * opts.scale,2));
+  newDim.volume = round2(dim.volume * Math.pow(unit_scale * opts.scale,3));
 
   return newDim;
+};
+
+/**
+ * Get min/max scale
+ */
+var getMinMaxScale = function(dim)
+{
+  var maxScaleW = MAX_DIM.width / dim.width
+    , maxScaleL = MAX_DIM.length / dim.length
+    , maxScaleH = MAX_DIM.height / dim.height
+    ;
+
+  var minScaleW = MIN_DIM.width / dim.width
+    , minScaleL = MIN_DIM.length / dim.length
+    , minScaleH = MIN_DIM.height / dim.height
+    ;
+
+  var maxScale = parseFloat(Math.min(maxScaleW, maxScaleL, maxScaleH).toFixed(1));
+  var minScale = parseFloat(Math.min(minScaleW, minScaleL, minScaleH).toFixed(1));
+
+  return {'max' : maxScale, 'min' : minScale};
+};
+
+var calculatePrice = function(volume)
+{
+  return volume * PRICE_MM3; // volume * price of 1 mm3
+};
+
+/**
+ * Round float to 2 decimals
+ */
+var round2 = function(val)
+{
+  return parseFloat(val.toFixed(2));
 };
