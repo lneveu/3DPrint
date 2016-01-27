@@ -8,7 +8,8 @@ var express      = require('express')
 app.use(bodyParser.json());
 
 // routes
-app.post('/check', routes.check );
+app.post('/check-all', routes.checkAll );
+app.post('/check-dimensions', routes.checkDimensions );
 
 // start sever
 app.listen(8080);
