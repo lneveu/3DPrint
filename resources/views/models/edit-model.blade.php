@@ -28,6 +28,8 @@
                         </div>
                     </div>
 
+
+
                     <div class="form-group">
                         <label class="col-md-1" for="title">Titre</label>
                         <div class="col-md-5">
@@ -47,6 +49,20 @@
                         </div>
                         <div class="col-md-2" style="width:15%">
                             <input type="number" id="input-format" class="form-control" name="scale" value="{{ $model->scale }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-1" for="scale">Unité</label>
+                        <div class="col-md-5">
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="inlineRadio1" value="mm" name="radioInline" checked>
+                                <label for="inlineRadio1"> mm </label>
+                            </div>
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="inlineRadio2" value="cm" name="radioInline">
+                                <label for="inlineRadio2"> cm </label>
+                            </div>
                         </div>
                     </div>
 
@@ -108,7 +124,7 @@
             </div>
 
             <div class="col-md-4">
-                <div id="viewer" style="width:400px;height:400px"></div>
+                <div id="viewer" style="width:600px;height:400px"></div>
             </div>
         </div>
 
@@ -122,26 +138,19 @@
         noUiSlider.create(softSlider, {
             start: $('#input-format').val(),
             range: {
-                min: 0,
-                max: 2
+                min: 0.1,
+                max: 7.5
             },
             pips: {
-                mode: 'values',
-                values: [0.1, 2],
-                density: 10
-            }
-        });
-
-        softSlider.noUiSlider.on('change', function ( values, handle ) {
-            if ( values[handle] < 0.1 ) {
-                softSlider.noUiSlider.set(0.1);
-            }
-        });
-
-        softSlider.noUiSlider.on('set', function ( values, handle ) {
-            if ( values[handle] < 0.1 ) {
-                softSlider.noUiSlider.set(0.1);
-            }
+                mode: 'range',
+                density: 3,
+                format: wNumb({
+                    decimals: 1
+                })
+            },
+            format: wNumb({
+                decimals: 1
+            })
         });
 
         var inputFormat = document.getElementById('input-format');
@@ -188,7 +197,7 @@
         window.onload = function() {
             thingiurlbase = "/thingiview/javascripts";
             thingiview = new Thingiview("viewer");
-            thingiview.setObjectColor('#045FB4');
+            //thingiview.setObjectColor('#045FB4');
             thingiview.setBackgroundColor('#6E6E6E');
             //thingiview.setCameraZoom(4);
             thingiview.setShowPlane(false);

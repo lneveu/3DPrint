@@ -603,13 +603,13 @@ Thingiview = function(containerId) {
   }
 
   this.loadArray = function(array) {
-    log("loading array...");
+    //log("loading array...");
     geometry = new STLGeometry(array);
     loadObjectGeometry();
     scope.setRotation(false);
     //scope.setRotation(true);
     scope.centerCamera();
-    log("finished loading " + geometry.faces.length + " faces.");
+    //log("finished loading " + geometry.faces.length + " faces.");
   }
 
   this.newWorker = function(cmd, param) {
@@ -628,7 +628,7 @@ Thingiview = function(containerId) {
 
         scope.setRotation(false);
         //scope.setRotation(true);
-        log("finished loading " + geometry.faces.length + " faces.");
+        //log("finished loading " + geometry.faces.length + " faces.");
         scope.centerCamera();
       } else if (event.data.status == "complete_points") {
         progressBar.innerHTML = 'Initializing points...';
@@ -659,7 +659,7 @@ Thingiview = function(containerId) {
 
         scope.setRotation(false);
         scope.setRotation(true);
-        log("finished loading " + event.data.content[0].length + " points.");
+        //log("finished loading " + event.data.content[0].length + " points.");
         // scope.centerCamera();
       } else if (event.data.status == "progress") {
         progressBar.style.display = 'block';
@@ -668,17 +668,17 @@ Thingiview = function(containerId) {
       } else if (event.data.status == "message") {
         progressBar.style.display = 'block';
         progressBar.innerHTML = event.data.content;
-        log(event.data.content);
+        //log(event.data.content);
       } else if (event.data.status == "alert") {
         scope.displayAlert(event.data.content);
       } else {
         alert('Error: ' + event.data);
-        log('Unknown Worker Message: ' + event.data);
+        //log('Unknown Worker Message: ' + event.data);
       }
     }
 
     worker.onerror = function(error) {
-      log(error);
+      //log(error);
       error.preventDefault();
     }
 
@@ -701,19 +701,34 @@ Thingiview = function(containerId) {
   }
 
   function loadObjectGeometry() {
+
     if (scene && geometry) {
       if (objectMaterial == 'wireframe') {
+
         // material = new THREE.MeshColorStrokeMaterial(objectColor, 1, 1);
         material = new THREE.MeshBasicMaterial({color:objectColor,wireframe:true});
       } else {
+
         if (isWebGl) {
+
           // material = new THREE.MeshPhongMaterial(objectColor, objectColor, 0xffffff, 50, 1.0);
           // material = new THREE.MeshColorFillMaterial(objectColor);
           // material = new THREE.MeshLambertMaterial({color:objectColor});
           material = new THREE.MeshLambertMaterial({color:objectColor, shading: THREE.FlatShading});
+
+          if (geometry.hasColors) {
+            console.log('geometry has colors');
+            material = new THREE.MeshPhongMaterial({ opacity: geometry.alpha, vertexColors: THREE.VertexColors });
+          }
+
         } else {
+
           // material = new THREE.MeshColorFillMaterial(objectColor);
-          material = new THREE.MeshLambertMaterial({color:objectColor, shading: THREE.FlatShading});
+          //material = new THREE.MeshLambertMaterial({color:objectColor, shading: THREE.FlatShading});
+
+          if (geometry.hasColors) {
+            material = new THREE.MeshPhongMaterial({ opacity: geometry.alpha, vertexColors: THREE.VertexColors });
+          }
         }
       }
 
