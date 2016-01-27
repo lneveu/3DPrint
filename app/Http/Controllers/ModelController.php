@@ -3,6 +3,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Model;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Response;
 
 class ModelController extends Controller
 {
@@ -14,17 +17,31 @@ class ModelController extends Controller
 
     public function postUploadModel(\App\Http\Requests\UploadModelRequest $request)
     {
-        // Save file
+        // Retrieve file
         $file = $request->file('file');
+        $fileName = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
+        $originalName = $fileName;
         $extension = $request->file('file')->getClientOriginalExtension();
-        $fileName = md5($file).'.'.$extension;
-        $path = storage_path().'/models/';
+        $fileName .= ".".$extension;
+
+        $id = \Auth::user()->id;
+        $path = storage_path().'/models/'.$id.'/';
+        if(!is_dir($path)) mkdir($path);
+
+        // Rename if file exists
+        $i = 1;
+        while(file_exists($path.$fileName))
+        {
+            $actual_name = $originalName.$i;
+            $fileName = $actual_name.".".$extension;
+            $i++;
+        }
+
+        // Save file
         $request->file('file')->move($path, $fileName);
 
 
-
         // Validate file through the validator local server
-
         $data = array("file" => $path.$fileName);
         $data_string = json_encode($data);
 
@@ -50,17 +67,18 @@ class ModelController extends Controller
                    $model = new Model();
                    $model->user_id = $user->id;
                    $model->file = $path.$fileName;
-                   $model->title = $file->getClientOriginalName();
+                   $model->title = $fileName;
+                   $model->scale = 1;
 
                    $model->save();
 
-                   return redirect('/edit-model/'.$model->id)->with(['ok' => 'Votre modèle à bien été validé']);
+                   return redirect('/edit-model/'.$model->id);
 
                // Invalid model
                case '2' :
                    // Delete model
                    unlink($path.$fileName);
-                   return redirect()->back()->with(['error' => 'Votre modèle n\'est pas valide, il contient des arrêtes non manifolds. Veuiller le corriger et le transférer à nouveau.']);
+                   return redirect()->back()->with(['error' => 'Votre modèle n\'est pas valide. Veuiller le corriger et le transférer à nouveau.']);
 
                // Bad request
                case '-1' :
@@ -86,8 +104,53 @@ class ModelController extends Controller
 
     public function getEditModel($id)
     {
+
         $model = Model::findOrFail($id);
-        return view('models.edit-model')->with(array('model' =>  $model));
+        $dateUpdate["day"] = $model->updated_at->day;
+        $dateUpdate["month"] = $this->monthToString($model->updated_at->month);
+        $dateUpdate["year"] = $model->updated_at->year;
+
+        return view('models.edit-model')->with(array('model' =>  $model, 'dateUpdate' => $dateUpdate));
+    }
+
+    private function monthToString($month)
+    {
+        switch($month)
+        {
+            case 1 : return "Janvier";
+            case 2 : return "Février";
+            case 3 : return "Mars";
+            case 4 : return "Avril";
+            case 5 : return "Mai";
+            case 6 : return "Juin";
+            case 7 : return "Juillet";
+            case 8 : return "Août";
+            case 9 : return "Septembre";
+            case 10 : return "Octobre";
+            case 11 : return "Novembre";
+            case 12 : return "Décembre";
+
+        }
+    }
+
+    // Return the file given the model id
+    public function getFile($id)
+    {
+        $model = Model::findOrFail($id);
+        return response()->download($model->file);
+
+    }
+
+    public function getDeleteModel($id)
+    {
+        $model = Model::findOrFail($id);
+        unlink($model->file);
+        $model->delete();
+
+        return redirect('/')->with(['ok' => 'Votre modèle a bien été supprimé.']);
+
+
+
     }
 
 }

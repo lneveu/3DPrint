@@ -12,11 +12,11 @@
                     {!! csrf_field() !!}
                     <div class="login-wrap">
                         <input type="hidden" name="login" value="1">
-                        @if($errors->default->has('email') && old('login'))<p class="error">{{ $errors->default->first('email') }}</p>@endif
-                        <input type="email" class="form-control @if($errors->has('email') && old('login')){{ "error-border" }}@endif" name="email" placeholder="E-mail" value="{{ old('email') }}">
+                        @if($errors->default->has('email') && (array_key_exists('remember', old()) || old('login')))<p class="error">{{ $errors->default->first('email') }}</p>@endif
+                        <input type="email" class="form-control @if($errors->has('email') && (array_key_exists('remember', old()) || old('login'))){{ "error-border" }}@endif" name="email" placeholder="E-mail" value="{{ old('email') }}">
 
                         @if($errors->default->has('password') && old('login'))<p class="error">{{ $errors->default->first('password') }}</p>@endif
-                        <input type="password" name="password" class="form-control @if($errors->has('password') && old('login')){{ "error-border" }}@endif" placeholder="Mot de passe">
+                        <input type="password" name="password" class="form-control @if($errors->default->has('password') && old('login')){{ "error-border" }}@endif" placeholder="Mot de passe">
 
 
                         <label class="checkbox">

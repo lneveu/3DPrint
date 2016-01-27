@@ -24,8 +24,25 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/upload-model', 'ModelController@getUploadModel');
     Route::post('/upload-model', 'ModelController@postUploadModel');
 
-    // Edit model
-    Route::get('/edit-model/{modelId}', 'ModelController@getEditModel')->where('modelId', '[0-9]+');;
+    // Utilisateurs possède le modèle
+    Route::group(['middleware' => 'userOwnModel'], function () {
+
+        // Edit model
+        Route::get('/edit-model/{id}', 'ModelController@getEditModel')->where('id', '[0-9]+');
+
+        // Get file
+        Route::get('/file/{id}', 'ModelController@getFile')->where('id', '[0-9]+');
+
+        // Edit title
+        Route::post('/edit-model/edit-title', 'AjaxController@postEditTitle');
+
+        // Delete model
+        Route::get('/delete-model/{id}', 'ModelController@getDeleteModel')->where('id', '[0-9]+');;
+
+
+
+    });
+
 });
 
 // Utilisateurs non connect�s seulement

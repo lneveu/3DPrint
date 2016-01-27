@@ -124,6 +124,9 @@ return [
         'price' => [
             'required' => 'Veuillez saisir un tarif.',
         ],
+        'file' => [
+            'required' => 'Veuillez selectionner un fichier.',
+        ],
     ],
 
     /*
