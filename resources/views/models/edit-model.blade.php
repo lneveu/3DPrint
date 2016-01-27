@@ -124,7 +124,7 @@
             </div>
 
             <div class="col-md-4">
-                <div id="viewer" style="width:600px;height:400px"></div>
+                <div id="viewer" style="width:400px;height:400px"></div>
             </div>
         </div>
 

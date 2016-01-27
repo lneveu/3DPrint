@@ -136,7 +136,7 @@ var verif_dimensions = function(file, opts, cb)
 
   if(ext.toLowerCase() === '.stl')
   {
-    // parse STL file
+      // parse STL file
     var buf = fs.readFileSync(file);
     geometry = STLLoader.parse(buf);
 
@@ -163,7 +163,7 @@ var verif_dimensions = function(file, opts, cb)
       opts.scale = maxminscale.min;
       dim = applyScale(dim, opts);
       price = calculatePrice(dim.volume);
-      cb({ "status" : "valid model after rescale (too sall)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      cb({ "status" : "valid model after rescale (too small)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else
     {
@@ -214,6 +214,7 @@ var applyScale = function(dim, opts)
   newDim.height = dim.height * unit_scale * opts.scale;
   newDim.area   = round2(dim.area * Math.pow(unit_scale * opts.scale,2));
   newDim.volume = round2(dim.volume * Math.pow(unit_scale * opts.scale,3));
+    console.log(opts.scale);
 
   return newDim;
 };

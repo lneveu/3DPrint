@@ -24,6 +24,8 @@ class CreateModelsTable extends Migration
             $table->float('surface');
             $table->float('price');
             $table->float('scale');
+            $table->float('scale_min');
+            $table->float('scale_max');
             $table->string('unit');
             $table->string('state');
             $table->timestamps();

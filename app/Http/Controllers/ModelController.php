@@ -62,8 +62,9 @@ class ModelController extends Controller
            switch($result->code)
            {
                // Valid model
-               case '0':
-               case '-5':
+               case '0' :
+               case '1' :
+               case '2' :
                    $user = \Auth::user();
                    $model = new Model();
                    $model->user_id = $user->id;
