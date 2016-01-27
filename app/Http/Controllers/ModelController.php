@@ -45,7 +45,7 @@ class ModelController extends Controller
         $data = array("file" => $path.$fileName);
         $data_string = json_encode($data);
 
-        $ch = curl_init('http://localhost:8080/check/');
+        $ch = curl_init('http://localhost:8080/check-all/');
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");
         curl_setopt($ch, CURLOPT_POSTFIELDS, $data_string);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -63,19 +63,26 @@ class ModelController extends Controller
            {
                // Valid model
                case '0':
+               case '-5':
                    $user = \Auth::user();
                    $model = new Model();
                    $model->user_id = $user->id;
                    $model->file = $path.$fileName;
                    $model->title = $fileName;
-                   $model->scale = 1;
+                   $model->length = $result->dimensions->length;
+                   $model->width = $result->dimensions->width;
+                   $model->height = $result->dimensions->height;
+                   $model->volume = $result->dimensions->volume;
+                   $model->surface = $result->dimensions->area;
+                   $model->unit = $result->opts->unit;
+                   $model->scale = $result->opts->scale;
 
                    $model->save();
 
                    return redirect('/edit-model/'.$model->id);
 
                // Invalid model
-               case '2' :
+               case '-3' :
                    // Delete model
                    unlink($path.$fileName);
                    return redirect()->back()->with(['error' => 'Votre modèle n\'est pas valide. Veuiller le corriger et le transférer à nouveau.']);
@@ -87,7 +94,7 @@ class ModelController extends Controller
                    return redirect()->back()->with(['error' => 'Erreur interne, veuillez contacter un administrateur.[Error -1 : bad request]']);
 
                // File does not exist
-               case '1' :
+               case '-2' :
                    return redirect()->back()->with(['error' => 'Erreur interne, veuillez contacter un administrateur.[Error 1 : file does not exist]']);
 
                default :

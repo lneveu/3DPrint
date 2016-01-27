@@ -4,7 +4,7 @@ namespace App\Models;
 
 class Model extends \Illuminate\Database\Eloquent\Model
 {
-    protected $fillable = ['file', 'user_id', 'title', 'length', 'height', 'width', 'thickness', 'volume', 'surface', 'price',
+    protected $fillable = ['file', 'user_id', 'title', 'length', 'height', 'width', 'unit', 'volume', 'surface', 'price',
         'scale','state'];
 
 

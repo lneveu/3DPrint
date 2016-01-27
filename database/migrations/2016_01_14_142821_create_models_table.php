@@ -20,11 +20,11 @@ class CreateModelsTable extends Migration
             $table->float('length');
             $table->float('height');
             $table->float('width');
-            $table->float('thickness');
             $table->float('volume');
             $table->float('surface');
             $table->float('price');
             $table->float('scale');
+            $table->string('unit');
             $table->string('state');
             $table->timestamps();
         });

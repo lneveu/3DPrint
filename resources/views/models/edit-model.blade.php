@@ -53,35 +53,30 @@
                     <div class="form-group">
                         <div class="col-md-3">
                             <label>Longueur</label>
-                            <p class="form-control-static">{{ $model->length }} cm</p>
+                            <p class="form-control-static">{{ $model->length }} {{ $model->unit }}</p>
                         </div>
 
                         <div class="col-md-3">
                             <label>Largeur</label>
-                            <p class="form-control-static">{{ $model->width }} cm</p>
+                            <p class="form-control-static">{{ $model->width }} {{ $model->unit }}</p>
                         </div>
 
                         <div class="col-md-3">
                             <label>Hauteur</label>
-                            <p class="form-control-static">{{ $model->height }} cm</p>
+                            <p class="form-control-static">{{ $model->height }} {{ $model->unit }}</p>
                         </div>
 
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-3">
-                            <label>Épaisseur</label>
-                            <p class="form-control-static">{{ $model->thickness }} cm</p>
-                        </div>
-
-                        <div class="col-md-3">
                             <label>Surface</label>
-                            <p class="form-control-static">{{ $model->surface }} cm²</p>
+                            <p class="form-control-static">{{ $model->surface }} {{ $model->unit }}²</p>
                         </div>
 
                         <div class="col-md-3">
                             <label>Volume</label>
-                            <p class="form-control-static">{{ $model->volume }} cm³</p>
+                            <p class="form-control-static">{{ $model->volume }} {{ $model->unit }}³</p>
                         </div>
                     </div>
                     <div class="form-group">
