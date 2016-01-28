@@ -33,6 +33,9 @@ class AjaxController extends Controller
                 if($request->has('scalemax')) $model->scale_max = $request->get('scalemax');
                 if($request->has('unit')) $model->unit = $request->get('unit');
                 if($request->has('price')) $model->price = $request->get('price');
+                if($request->has('length')) $model->length = $request->get('length');
+                if($request->has('width')) $model->width = $request->get('width');
+                if($request->has('height')) $model->height = $request->get('height');
 
                 $model->save();
 

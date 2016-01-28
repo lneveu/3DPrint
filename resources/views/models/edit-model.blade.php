@@ -286,7 +286,11 @@
                         'unit' : $('input[name=unit]:checked').val(),
                         'scalemin' : scale_min,
                         'scalemax' : scale_max,
-                        'price' : parseFloat($('#price').val())
+                        'price' : parseFloat($('#price').text()),
+                        'length' : parseFloat($('#length').text()),
+                        'width' : parseFloat($('#width').text()),
+                        'height' : parseFloat($('#height').text())
+
                     });
             $.ajax({
                 headers: {
