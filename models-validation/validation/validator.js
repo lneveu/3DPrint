@@ -142,7 +142,7 @@ var verif_dimensions = function(file, opts, cb)
       dim = applyScale(origin_dim, opts.scale); // rescale the model with maxscale (with current unit)
       price = calculatePrice(dim.volume, opts.unit); // calculate price according to the volume
 
-      cb({ "status" : "valid model after rescale (too big)", "code" : 2, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      cb({ "status" : "valid model after rescale (too big)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else if( isTooSmall(origin_dim, opts) ) // model is too small
     {
@@ -150,7 +150,7 @@ var verif_dimensions = function(file, opts, cb)
       dim = applyScale(origin_dim, opts.scale);
       price = calculatePrice(dim.volume, opts.unit);
 
-      cb({ "status" : "valid model after rescale (too small)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      cb({ "status" : "valid model after rescale (too small)", "code" : 2, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else
     {
