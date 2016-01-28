@@ -11,9 +11,9 @@ use Illuminate\Support\Facades\Response;
 class AjaxController extends Controller
 {
 
-    public function postEditTitle(Request $request)
+    public function postEditModel(Request $request)
     {
-        if($request->ajax() && $request->has('id') && $request->has('title'))
+        if($request->ajax() && $request->has('id'))
         {
             $id = $request->get('id');
             $model = Model::findOrFail($id);
@@ -27,7 +27,13 @@ class AjaxController extends Controller
             }
             else
             {
-                $model->title = $request->get('title');
+                if($request->has('title')) $model->title = $request->get('title');
+                if($request->has('scale')) $model->scale = $request->get('scale');
+                if($request->has('scalemin')) $model->scale_min = $request->get('scalemin');
+                if($request->has('scalemax')) $model->scale_max = $request->get('scalemax');
+                if($request->has('unit')) $model->unit = $request->get('unit');
+                if($request->has('price')) $model->price = $request->get('price');
+
                 $model->save();
 
                 return response()->json([

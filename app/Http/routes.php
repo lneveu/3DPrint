@@ -33,13 +33,13 @@ Route::group(['middleware' => 'auth'], function () {
         // Get file
         Route::get('/file/{id}', 'ModelController@getFile')->where('id', '[0-9]+');
 
-        // Edit title
-        Route::post('/edit-model/edit-title', 'AjaxController@postEditTitle');
-
         // Delete model
         Route::get('/delete-model/{id}', 'ModelController@getDeleteModel')->where('id', '[0-9]+');
 
-        // Check dimensions
+        // Ajax Edit model
+        Route::post('/edit-model', 'AjaxController@postEditModel');
+
+        // Ajax Check dimensions
         Route::post('/check-dimensions', 'AjaxController@postCheckDimensions');
     });
 
