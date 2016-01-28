@@ -1866,7 +1866,7 @@ ul#filters > .active > span {
 .form-signin .checkbox { margin-bottom: 14px }
 .form-signin .checkbox {
     font-weight: normal;
-    color: #b6b6b6;
+    /*color: #b6b6b6;*/
     font-weight: 300;
 }
 
