@@ -1,0 +1,16 @@
+{
+  "MAX_DIM" :
+  {
+    "length"   : 256
+    , "width"  : 169
+    , "height" : 150
+  }
+  , "MIN_DIM" :
+  {
+    "length"   : 1
+    , "width"  : 1
+    , "height" : 1
+  }
+  , "PRICE_MM3" : 0.0007
+  , "PRICE_BASE" : 10
+}

@@ -7,25 +7,8 @@ var PythonShell   = require('python-shell')
     , STLLoader   = require('../threejs/STLLoader.js')
     , ThreeUtils  = require('../threejs/ThreeUtils.js')
     , THREE       = require('three')
+    , config      = require('../config.json')
     ;
-
-// max dimensions (mm)
-var MAX_DIM =
-{
-  'length'   : 256
-  , 'width'  : 169
-  , 'height' : 150
-};
-
-// min dimensions (mm)
-var MIN_DIM =
-{
-  'length'   : 1
-  , 'width'  : 1
-  , 'height' : 1
-};
-
-var PRICE_MM3 = 0.001; // 1mm3 = 0.001€
 
 module.exports =
 {
@@ -156,8 +139,8 @@ var verif_dimensions = function(file, opts, cb)
     if( isTooBig(origin_dim, opts) ) // model is too big
     {
       opts.scale = maxminscale.max; // set current scale to maxscale
-      dim = applyScale(origin_dim, opts.scale); // rescale the model with maxscale (mm)
-      price = calculatePrice(dim.volume); // calculate price according to the volume
+      dim = applyScale(origin_dim, opts.scale); // rescale the model with maxscale (with current unit)
+      price = calculatePrice(dim.volume, opts.unit); // calculate price according to the volume
       displayableDim = getDimensionsForDisplay(dim, opts.unit); // get dimensions according to the unit
 
       cb({ "status" : "valid model after rescale (too big)", "code" : 2, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
@@ -166,7 +149,7 @@ var verif_dimensions = function(file, opts, cb)
     {
       opts.scale = maxminscale.min; // set current scale to minscale
       dim = applyScale(origin_dim, opts.scale);
-      price = calculatePrice(dim.volume);
+      price = calculatePrice(dim.volume, opts.unit);
       displayableDim = getDimensionsForDisplay(dim, opts.unit);
 
       cb({ "status" : "valid model after rescale (too sall)", "code" : 1, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
@@ -174,7 +157,7 @@ var verif_dimensions = function(file, opts, cb)
     else
     {
       dim = applyScale(origin_dim, opts.scale);
-      price = calculatePrice(dim.volume);
+      price = calculatePrice(dim.volume, opts.unit);
       displayableDim = getDimensionsForDisplay(dim, opts.unit);
 
       cb({ "status" : "valid model", "code" : 0, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
@@ -228,24 +211,22 @@ var applyScale = function(dim, scale)
  */
 var getMinMaxScale = function(dim, unit)
 {
-  var unit_scale = 1;
+  var unit_scale = getUnitScale(unit);
 
-  if(unit === "cm") unit_scale = 10;
-
-  var maxScaleW = MAX_DIM.width / (dim.width * unit_scale)
-    , maxScaleL = MAX_DIM.length / (dim.length * unit_scale)
-    , maxScaleH = MAX_DIM.height / (dim.height * unit_scale)
+  var maxScaleW = config.MAX_DIM.width / (dim.width * unit_scale)
+    , maxScaleL = config.MAX_DIM.length / (dim.length * unit_scale)
+    , maxScaleH = config.MAX_DIM.height / (dim.height * unit_scale)
     ;
 
-  var minScaleW = MIN_DIM.width / (dim.width * unit_scale)
-    , minScaleL = MIN_DIM.length / (dim.length * unit_scale)
-    , minScaleH = MIN_DIM.height / (dim.height * unit_scale)
+  var minScaleW = config.MIN_DIM.width / (dim.width * unit_scale)
+    , minScaleL = config.MIN_DIM.length / (dim.length * unit_scale)
+    , minScaleH = config.MIN_DIM.height / (dim.height * unit_scale)
     ;
 
-  var maxScale = utils.truncateDecimals(Math.min(maxScaleW, maxScaleL, maxScaleH), 1);
-  var minScale = utils.truncateDecimals(Math.min(minScaleW, minScaleL, minScaleH), 1);
-  if(maxScale === 0) maxScale = 0.1;
-  if(minScale === 0) minScale = 0.1;
+  var maxScale = utils.truncateDecimals(Math.min(maxScaleW, maxScaleL, maxScaleH), 2);
+  var minScale = utils.truncateDecimals(Math.min(minScaleW, minScaleL, minScaleH), 2);
+  if(maxScale < 0.1) maxScale = 0.1;
+  if(minScale < 0.1) minScale = 0.1;
 
   return {'max' : maxScale, 'min' : minScale};
 };
@@ -255,11 +236,10 @@ var getMinMaxScale = function(dim, unit)
  */
 var isTooBig = function(dim, opts)
 {
-    var unit_scale = 1;
-    if(opts.unit === "cm") unit_scale = 10;
+    var unit_scale = getUnitScale(opts.unit);
     var tmp_dim = applyScale(dim, opts.scale);
 
-    return (tmp_dim.length * unit_scale > MAX_DIM.length || tmp_dim.width * unit_scale > MAX_DIM.width || tmp_dim.height * unit_scale > MAX_DIM.height);
+    return (tmp_dim.length * unit_scale > config.MAX_DIM.length || tmp_dim.width * unit_scale > config.MAX_DIM.width || tmp_dim.height * unit_scale > config.MAX_DIM.height);
 };
 
 /**
@@ -267,19 +247,19 @@ var isTooBig = function(dim, opts)
  */
 var isTooSmall = function(dim, opts)
 {
-    var unit_scale = 1;
-    if(opts.unit === "cm") unit_scale = 10;
+    var unit_scale = getUnitScale(opts.unit);
     var tmp_dim = applyScale(dim, opts.scale);
 
-    return (tmp_dim.length * unit_scale < MIN_DIM.length || tmp_dim.width * unit_scale < MIN_DIM.width || tmp_dim.height * unit_scale < MIN_DIM.height);
+    return (tmp_dim.length * unit_scale < config.MIN_DIM.length || tmp_dim.width * unit_scale < config.MIN_DIM.width || tmp_dim.height * unit_scale < config.MIN_DIM.height);
 };
 
 /**
  * Calculate price according to the volume
  */
-var calculatePrice = function(volume)
+var calculatePrice = function(volume, unit)
 {
-  return volume * PRICE_MM3; // volume * price of 1 mm3
+  var unit_scale = getUnitScale(unit);
+  return (volume * Math.pow(unit_scale,3) * config.PRICE_MM3) + config.PRICE_BASE; // volume * price of 1 mm3
 };
 
 /**
@@ -287,11 +267,9 @@ var calculatePrice = function(volume)
  */
 var getDimensionsForDisplay = function(dim, unit)
 {
-  var unit_scale = 1
+  var unit_scale = getUnitScale(unit)
     , newDim     = {}
     ;
-
-  if(unit === "cm") unit_scale = 10;
 
   newDim.length = dim.length / unit_scale;
   newDim.width  = dim.width / unit_scale;
@@ -300,4 +278,14 @@ var getDimensionsForDisplay = function(dim, unit)
   newDim.volume = utils.round2(dim.volume / Math.pow(unit_scale,3));
 
   return newDim;
+};
+
+/**
+ * Get unit scale by unit
+ */
+var getUnitScale = function(unit)
+{
+  var unit_scale = 1;
+  if(unit === "cm") unit_scale = 10;
+  return unit_scale;
 };
