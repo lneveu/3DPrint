@@ -141,26 +141,23 @@ var verif_dimensions = function(file, opts, cb)
       opts.scale = maxminscale.max; // set current scale to maxscale
       dim = applyScale(origin_dim, opts.scale); // rescale the model with maxscale (with current unit)
       price = calculatePrice(dim.volume, opts.unit); // calculate price according to the volume
-      displayableDim = getDimensionsForDisplay(dim, opts.unit); // get dimensions according to the unit
 
-      cb({ "status" : "valid model after rescale (too big)", "code" : 2, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      cb({ "status" : "valid model after rescale (too big)", "code" : 2, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else if( isTooSmall(origin_dim, opts) ) // model is too small
     {
       opts.scale = maxminscale.min; // set current scale to minscale
       dim = applyScale(origin_dim, opts.scale);
       price = calculatePrice(dim.volume, opts.unit);
-      displayableDim = getDimensionsForDisplay(dim, opts.unit);
 
-      cb({ "status" : "valid model after rescale (too small)", "code" : 1, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      cb({ "status" : "valid model after rescale (too small)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else
     {
       dim = applyScale(origin_dim, opts.scale);
       price = calculatePrice(dim.volume, opts.unit);
-      displayableDim = getDimensionsForDisplay(dim, opts.unit);
 
-      cb({ "status" : "valid model", "code" : 0, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
+      cb({ "status" : "valid model", "code" : 0, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
     }
   }
   /*else if(ext.toLowerCase() === '.obj')
@@ -258,26 +255,10 @@ var isTooSmall = function(dim, opts)
  */
 var calculatePrice = function(volume, unit)
 {
-  var unit_scale = getUnitScale(unit);
-  return (volume * Math.pow(unit_scale,3) * config.PRICE_MM3) + config.PRICE_BASE; // volume * price of 1 mm3
-};
-
-/**
- * Return dimensions that will be displayed
- */
-var getDimensionsForDisplay = function(dim, unit)
-{
   var unit_scale = getUnitScale(unit)
-    , newDim     = {}
-    ;
+    , price = parseFloat(((volume * Math.pow(unit_scale,3) * config.PRICE_MM3) + config.PRICE_BASE).toFixed(2));
 
-  newDim.length = dim.length / unit_scale;
-  newDim.width  = dim.width / unit_scale;
-  newDim.height = dim.height / unit_scale;
-  newDim.area   = utils.round2(dim.area / Math.pow(unit_scale,2));
-  newDim.volume = utils.round2(dim.volume / Math.pow(unit_scale,3));
-
-  return newDim;
+  return price;
 };
 
 /**
