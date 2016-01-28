@@ -149,7 +149,8 @@ var verif_dimensions = function(file, opts, cb)
     }
 
     var dim = applyScale(getDimensions(geometry), opts);
-    var maxminscale = getMinMaxScale(dim);
+
+      var maxminscale = getMinMaxScale(dim);
 
     if(dim.length > MAX_DIM.length || dim.width > MAX_DIM.width || dim.height > MAX_DIM.height) // model is too big
     {
@@ -214,7 +215,6 @@ var applyScale = function(dim, opts)
   newDim.height = dim.height * unit_scale * opts.scale;
   newDim.area   = round2(dim.area * Math.pow(unit_scale * opts.scale,2));
   newDim.volume = round2(dim.volume * Math.pow(unit_scale * opts.scale,3));
-    console.log(opts.scale);
 
   return newDim;
 };
