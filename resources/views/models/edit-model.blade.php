@@ -152,67 +152,82 @@
         var scale_max = parseFloat($('#maxscale').val());
         var file = $('#file').val();
 
+        createSlider(scale, scale_min, scale_max);
 
-
-        noUiSlider.create(softSlider, {
-            start: scale,
-            range: {
-                min: scale_min,
-                max: scale_max
-            },
-            pips: {
-                mode: 'range',
-                density: 3,
+        function createSlider(scale, scalemin, scalemax){
+            noUiSlider.create(softSlider, {
+                start: scale,
+                range: {
+                    min: scalemin,
+                    max: scalemax
+                },
+                pips: {
+                    mode: 'range',
+                    density: 3,
+                    format: wNumb({
+                        decimals: 1
+                    })
+                },
                 format: wNumb({
                     decimals: 1
                 })
-            },
-            format: wNumb({
-                decimals: 1
-            })
-        });
+            });
 
-        var inputFormat = document.getElementById('input-format');
+            var inputFormat = document.getElementById('input-format');
 
-        softSlider.noUiSlider.on('update', function( values, handle ) {
-            inputFormat.value = values[handle];
-        });
+            softSlider.noUiSlider.on('update', function( values, handle ) {
+                inputFormat.value = values[handle];
+            });
 
-        softSlider.noUiSlider.on('set', function( values, handle ) {
-            checkDimenssions();
-        });
+            softSlider.noUiSlider.on('set', function( values, handle ) {
+                checkDimensions(function(data){
+                    scale_min = data.minscale;
+                    scale_max = data.maxscale;
+                    updateModel();
+                });
 
-        inputFormat.addEventListener('change', function(e){
-            softSlider.noUiSlider.set(this.value);
-            checkDimenssions();
-        });
+            });
 
-        inputFormat.addEventListener('keypress', function(e){
-            if (e.keyCode == 13) {
+            inputFormat.addEventListener('change', function(e){
                 softSlider.noUiSlider.set(this.value);
-                checkDimenssions();
-                e.preventDefault();
-            }
-        });
+                checkDimensions(function(data){
+                    scale_min = data.minscale;
+                    scale_max = data.maxscale;
+                    updateModel();
+                });
+
+            });
+
+            inputFormat.addEventListener('keypress', function(e){
+                if (e.keyCode == 13) {
+                    softSlider.noUiSlider.set(this.value);
+                    checkDimensions(function(data){
+                        scale_min = data.minscale;
+                        scale_max = data.maxscale;
+                        updateModel();
+                    });
+
+                    e.preventDefault();
+                }
+            });
+
+        }
 
         $('input[name=unit]').on('click', function(){
-            checkDimenssions();
+
+            checkDimensions(function(data){
+                scale_min = data.minscale;
+                scale_max = data.maxscale;
+                softSlider.noUiSlider.destroy();
+                createSlider(data.opts.scale, data.minscale, data.maxscale);
+                updateModel();
+            });
+
+
         });
 
         $('#input-title').on('change keyup', function(){
-            $.ajax({
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                type: "POST",
-                url: "/edit-model/edit-title",
-                data: JSON.stringify({'id': $('#model-id').val(), 'title' : $('#input-title').val()}),
-                dataType: "json",
-                contentType: "application/json; charset=UTF-8"
-            })
-            .done(function( data ) {
-                $('#update-title').text('Modifications enregistrées')
-            });
+            updateModel();
         });
 
         $('#delete').on('click',function(e){
@@ -237,7 +252,7 @@
 
         };
 
-        function checkDimenssions()
+        function checkDimensions(cb)
         {
             $.ajax({
                 headers: {
@@ -257,6 +272,34 @@
                 $('#volume').text(result.data.dimensions.volume);
                 $('#price').text(result.data.price);
                 $('.unit').text(result.data.opts.unit);
+
+                cb(result.data);
+            });
+        }
+
+        function updateModel()
+        {
+            var data = JSON.stringify({
+                        'id': $('#model-id').val(),
+                        'title' : $('#input-title').val(),
+                        'scale' : parseFloat($('#input-format').val()),
+                        'unit' : $('input[name=unit]:checked').val(),
+                        'scalemin' : scale_min,
+                        'scalemax' : scale_max,
+                        'price' : parseFloat($('#price').val())
+                    });
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "/edit-model",
+                data: data,
+                dataType: "json",
+                contentType: "application/json; charset=UTF-8"
+            })
+            .done(function( data ) {
+                $('#update-title').text('Modifications enregistrées')
             });
         }
 
