@@ -222,9 +222,8 @@ var getMinMaxScale = function(dim, unit)
 
   var maxScale = utils.truncateDecimals(Math.min(maxScaleW, maxScaleL, maxScaleH), 2);
   var minScale = utils.truncateDecimals(Math.min(minScaleW, minScaleL, minScaleH), 2);
-  if(maxScale < 0.1) maxScale = 0.1;
-  if(minScale < 0.1) minScale = 0.1;
 
+  // todo: manage maxscale / minscale
   return {'max' : maxScale, 'min' : minScale};
 };
 
