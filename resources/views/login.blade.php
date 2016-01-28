@@ -19,12 +19,13 @@
                         <input type="password" name="password" class="form-control @if($errors->default->has('password') && old('login')){{ "error-border" }}@endif" placeholder="Mot de passe">
 
 
-                        <label class="checkbox">
-                            <input type="checkbox" name="remember" value="remember"> Se souvenir de moi
+                        <div class="checkbox">
+                            <input type="checkbox" id="c1" name="remember" value="remember">
+                            <label for="c1">Se souvenir de moi</label>
                             <span class="pull-right">
                                 <a data-toggle="modal" href="{{ url('password/email') }}"> Mot de passe oublié ?</a>
                             </span>
-                        </label>
+                        </div>
                         <div class="margin-bottom">
                             Pas encore inscrit ?
                             <span class="pull-right">

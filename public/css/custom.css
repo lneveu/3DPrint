@@ -176,3 +176,6 @@ body {
 .white{
     color: #fff;
 }
+.radio-inline{
+    padding-top: inherit !important;
+}

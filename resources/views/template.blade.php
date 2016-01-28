@@ -37,10 +37,11 @@
     <script type="text/javascript" src="/js/parallax-slider/modernizr.custom.28468.js"></script>
 
     <!-- Custom -->
-    <link href="/css/custom.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/nouislider.min.css"/>
     <link rel="stylesheet" href="/css/nouislider.pips.css"/>
     <link rel="stylesheet" href="/css/nouislider.tooltips.css"/>
+    <link rel="stylesheet" href="/css/awesome-bootstrap-checkbox.css"/>
+    <link href="/css/custom.css" rel="stylesheet">
 
 
 
@@ -77,6 +78,8 @@
 <script src="/js/link-hover.js"></script>
 <script src="/js/superfish.js"></script>
 <script src="/js/nouislider.min.js"></script>
+<script src="/js/wNumb.js"></script>
+
 
 <script src="/thingiview/javascripts/Three.js"></script>
 <script src="/thingiview/javascripts/plane.js"></script>

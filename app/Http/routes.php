@@ -37,10 +37,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('/edit-model/edit-title', 'AjaxController@postEditTitle');
 
         // Delete model
-        Route::get('/delete-model/{id}', 'ModelController@getDeleteModel')->where('id', '[0-9]+');;
+        Route::get('/delete-model/{id}', 'ModelController@getDeleteModel')->where('id', '[0-9]+');
 
-
-
+        // Check dimensions
+        Route::post('/check-dimensions', 'AjaxController@postCheckDimensions');
     });
 
 });

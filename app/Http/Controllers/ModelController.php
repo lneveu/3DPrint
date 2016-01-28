@@ -62,8 +62,9 @@ class ModelController extends Controller
            switch($result->code)
            {
                // Valid model
-               case '0':
-               case '-5':
+               case '0' :
+               case '1' :
+               case '2' :
                    $user = \Auth::user();
                    $model = new Model();
                    $model->user_id = $user->id;
@@ -76,10 +77,27 @@ class ModelController extends Controller
                    $model->surface = $result->dimensions->area;
                    $model->unit = $result->opts->unit;
                    $model->scale = $result->opts->scale;
+                   $model->scale_max = $result->maxscale;
+                   $model->scale_min = $result->minscale;
+                   $model->price = $result->price;
 
                    $model->save();
 
-                   return redirect('/edit-model/'.$model->id);
+                   // Too big
+                   if($result->code == 1)
+                   {
+                       return redirect('/edit-model/'.$model->id)->with(['resize' => 'Attention, votre modèle a été redimensionné car il est trop grand. Nous vous conseillons de le modifié par vous-même.']);
+                   }
+                   elseif($result->code == 2)
+                   {
+                       return redirect('/edit-model/'.$model->id)->with(['resize' => 'Attention, votre modèle a été redimensionné car il est trop petit. Nous vous conseillons de le modifié par vous-même.']);
+                   }
+                   else
+                   {
+                       return redirect('/edit-model/'.$model->id);
+                   }
+
+
 
                // Invalid model
                case '-3' :

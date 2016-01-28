@@ -21,12 +21,26 @@
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 
                     <input type="hidden" id="model-id" value="{{ $model->id }}">
+                    <input type="hidden" id="minscale" value="{{ $model->scale_min }}">
+                    <input type="hidden" id="maxscale" value="{{ $model->scale_max }}">
+                    <input type="hidden" id="scale" value="{{ $model->scale }}">
+                    <input type="hidden" id="file" value="{{ $model->file }}">
+
+
 
                     <div class="form-group">
                         <div class="col-md-6">
                             <p><i>Dernière modification : le {{ $dateUpdate['day'] }} {{ $dateUpdate['month'] }} {{ $dateUpdate['year'] }} à {{ $model->updated_at->toTimeString() }}</i></p>
                         </div>
                     </div>
+
+                    @if(session()->has('resize'))
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <p class="error">{{ session('resize') }}</p>
+                            </div>
+                        </div>
+                    @endif
 
                     <div class="form-group">
                         <label class="col-md-1" for="title">Titre</label>
@@ -45,25 +59,39 @@
                         <div class="col-md-5">
                             <div id="soft" class="noUi-target noUi-ltr noUi-horizontal noUi-background"></div><br/><br/><br/>
                         </div>
-                        <div class="col-md-2" style="width:15%">
+                        <div class="col-md-2">
                             <input type="number" id="input-format" class="form-control" name="scale" value="{{ $model->scale }}">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-1" for="scale">Unité</label>
+                        <div class="col-md-5">
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="inlineRadio1" value="mm" name="unit" @if($model->unit == "mm"){{"checked"}}@endif>
+                                <label for="inlineRadio1"> mm </label>
+                            </div>
+                            <div class="radio radio-info radio-inline">
+                                <input type="radio" id="inlineRadio2" value="cm" name="unit" @if($model->unit == "cm"){{"checked"}}@endif>
+                                <label for="inlineRadio2"> cm </label>
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <div class="col-md-3">
                             <label>Longueur</label>
-                            <p class="form-control-static">{{ $model->length }} {{ $model->unit }}</p>
+                            <p class="form-control-static"><span id="length">{{ $model->length }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
 
                         <div class="col-md-3">
                             <label>Largeur</label>
-                            <p class="form-control-static">{{ $model->width }} {{ $model->unit }}</p>
+                            <p class="form-control-static"><span id="width">{{ $model->width }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
 
                         <div class="col-md-3">
                             <label>Hauteur</label>
-                            <p class="form-control-static">{{ $model->height }} {{ $model->unit }}</p>
+                            <p class="form-control-static"><span id="height">{{ $model->height }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
 
                     </div>
@@ -71,17 +99,17 @@
                     <div class="form-group">
                         <div class="col-md-3">
                             <label>Surface</label>
-                            <p class="form-control-static">{{ $model->surface }} {{ $model->unit }}²</p>
+                            <p class="form-control-static"><span id="surface">{{ $model->surface }}</span> <span class="unit">{{ $model->unit }}</span>²</p>
                         </div>
 
                         <div class="col-md-3">
                             <label>Volume</label>
-                            <p class="form-control-static">{{ $model->volume }} {{ $model->unit }}³</p>
+                            <p class="form-control-static"><span id="volume">{{ $model->volume }}</span> <span class="unit">{{ $model->unit }}</span>³</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <div class="col-md-3">
-                            <p class="form-control-static"><b class="black">Prix unitaire : {{ $model->price }} €</b></p>
+                            <p class="form-control-static"><b class="black">Prix unitaire : <span id="price">{{ $model->price }}</span> €</b></p>
                         </div>
 
                         <div class="col-md-3"></div>
@@ -119,29 +147,29 @@
     <script>
         var softSlider = document.getElementById('soft');
 
+        var scale = parseFloat($('#scale').val());
+        var scale_min = parseFloat($('#minscale').val());
+        var scale_max = parseFloat($('#maxscale').val());
+        var file = $('#file').val();
+
+
+
         noUiSlider.create(softSlider, {
-            start: $('#input-format').val(),
+            start: scale,
             range: {
-                min: 0,
-                max: 2
+                min: scale_min,
+                max: scale_max
             },
             pips: {
-                mode: 'values',
-                values: [0.1, 2],
-                density: 10
-            }
-        });
-
-        softSlider.noUiSlider.on('change', function ( values, handle ) {
-            if ( values[handle] < 0.1 ) {
-                softSlider.noUiSlider.set(0.1);
-            }
-        });
-
-        softSlider.noUiSlider.on('set', function ( values, handle ) {
-            if ( values[handle] < 0.1 ) {
-                softSlider.noUiSlider.set(0.1);
-            }
+                mode: 'range',
+                density: 3,
+                format: wNumb({
+                    decimals: 1
+                })
+            },
+            format: wNumb({
+                decimals: 1
+            })
         });
 
         var inputFormat = document.getElementById('input-format');
@@ -150,15 +178,25 @@
             inputFormat.value = values[handle];
         });
 
+        softSlider.noUiSlider.on('set', function( values, handle ) {
+            checkDimenssions();
+        });
+
         inputFormat.addEventListener('change', function(e){
             softSlider.noUiSlider.set(this.value);
+            checkDimenssions();
         });
 
         inputFormat.addEventListener('keypress', function(e){
             if (e.keyCode == 13) {
                 softSlider.noUiSlider.set(this.value);
+                checkDimenssions();
                 e.preventDefault();
             }
+        });
+
+        $('input[name=unit]').on('click', function(){
+            checkDimenssions();
         });
 
         $('#input-title').on('change keyup', function(){
@@ -198,6 +236,29 @@
             thingiview.loadSTL(location.origin+"/file/"+$('#model-id').val());
 
         };
+
+        function checkDimenssions()
+        {
+            $.ajax({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                type: "POST",
+                url: "/check-dimensions",
+                data: JSON.stringify({'id': $('#model-id').val(), 'file': file, 'opts' : {'scale' : parseFloat($('#input-format').val()), 'unit' : $('input[name=unit]:checked').val()}}),
+                dataType: "json",
+                contentType: "application/json; charset=UTF-8"
+            })
+            .done(function( result ) {
+                $('#length').text(result.data.dimensions.length);
+                $('#height').text(result.data.dimensions.height);
+                $('#width').text(result.data.dimensions.width);
+                $('#surface').text(result.data.dimensions.area);
+                $('#volume').text(result.data.dimensions.volume);
+                $('#price').text(result.data.price);
+                $('.unit').text(result.data.opts.unit);
+            });
+        }
 
 
     </script>

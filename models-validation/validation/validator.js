@@ -152,7 +152,7 @@ var verif_dimensions = function(file, opts, cb)
       price = calculatePrice(dim.volume, opts.unit);
       displayableDim = getDimensionsForDisplay(dim, opts.unit);
 
-      cb({ "status" : "valid model after rescale (too sall)", "code" : 1, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      cb({ "status" : "valid model after rescale (too small)", "code" : 1, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else
     {
