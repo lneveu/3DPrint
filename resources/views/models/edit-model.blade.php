@@ -1,7 +1,7 @@
 @extends('template')
 
 @section('title')
-    3DPaper
+    3DPaper - Édition du modèle
 @stop
 
 @section('header')
@@ -10,7 +10,7 @@
 
 @section('body')
 
-    @include('breadcrumbs', array('breadcrumb_title' => 'Édition du modèle'))
+    @include('breadcrumbs', array('breadcrumb_title' => 'Édition du modèle', 'breadcrumb_list' => [['Accueil','/'], ['Dépôt du modèle','/upload-model'], ['Édition du modèle','/edit-model']]) )
 
     <div class="container">
 

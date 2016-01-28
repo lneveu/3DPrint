@@ -2,6 +2,7 @@
 var PythonShell   = require('python-shell')
     , fs          = require('fs')
     , path        = require('path')
+    , utils       = require('../utils.js')
     , SCRIPT_PATH = __dirname + '/stl_normalize'
     , STLLoader   = require('../threejs/STLLoader.js')
     , ThreeUtils  = require('../threejs/ThreeUtils.js')
@@ -129,14 +130,15 @@ var verif_nonmanifold = function(file, cb)
  */
 var verif_dimensions = function(file, opts, cb)
 {
-  var ext      = path.extname(file)
-    , geometry = null
-    , price    = null
+  var ext            = path.extname(file)
+    , geometry       = null
+    , price          = null
+    , displayableDim = null
     ;
 
   if(ext.toLowerCase() === '.stl')
   {
-      // parse STL file
+    // parse STL file
     var buf = fs.readFileSync(file);
     geometry = STLLoader.parse(buf);
 
@@ -148,28 +150,34 @@ var verif_dimensions = function(file, opts, cb)
       geometry = new THREE.Geometry().fromBufferGeometry(geometry);
     }
 
-    var dim = applyScale(getDimensions(geometry), opts);
+    var origin_dim = getDimensions(geometry); // get origin dimensions
+    maxminscale = getMinMaxScale(origin_dim, opts.unit); // get MAX & MIN scale of origin dimensions according to unit
 
-      var maxminscale = getMinMaxScale(dim);
-
-    if(dim.length > MAX_DIM.length || dim.width > MAX_DIM.width || dim.height > MAX_DIM.height) // model is too big
+    if( isTooBig(origin_dim, opts) ) // model is too big
     {
-      opts.scale = maxminscale.max;
-      dim = applyScale(dim, opts);
-      price = calculatePrice(dim.volume);
-      cb({ "status" : "valid model after rescale (too big)", "code" : 2, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      opts.scale = maxminscale.max; // set current scale to maxscale
+      dim = applyScale(origin_dim, opts.scale); // rescale the model with maxscale (mm)
+      price = calculatePrice(dim.volume); // calculate price according to the volume
+      displayableDim = getDimensionsForDisplay(dim, opts.unit); // get dimensions according to the unit
+
+      cb({ "status" : "valid model after rescale (too big)", "code" : 2, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
-    else if(dim.length < MIN_DIM.length || dim.width < MIN_DIM.width || dim.height < MIN_DIM.height) // model is too small
+    else if( isTooSmall(origin_dim, opts) ) // model is too small
     {
-      opts.scale = maxminscale.min;
-      dim = applyScale(dim, opts);
+      opts.scale = maxminscale.min; // set current scale to minscale
+      dim = applyScale(origin_dim, opts.scale);
       price = calculatePrice(dim.volume);
-      cb({ "status" : "valid model after rescale (too small)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+      displayableDim = getDimensionsForDisplay(dim, opts.unit);
+
+      cb({ "status" : "valid model after rescale (too small)", "code" : 1, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
     }
     else
     {
+      dim = applyScale(origin_dim, opts.scale);
       price = calculatePrice(dim.volume);
-      cb({ "status" : "valid model", "code" : 0, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
+      displayableDim = getDimensionsForDisplay(dim, opts.unit);
+
+      cb({ "status" : "valid model", "code" : 0, "dimensions" : displayableDim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
     }
   }
   /*else if(ext.toLowerCase() === '.obj')
@@ -184,7 +192,7 @@ var verif_dimensions = function(file, opts, cb)
 };
 
 /**
- * Return dimensions of a mesh
+ * Return dimensions of a mesh (dimensions have not unit)
  * {length, width, height, volume, area}
  */
 var getDimensions = function(geometry)
@@ -203,52 +211,93 @@ var getDimensions = function(geometry)
 /**
  * Apply scale to dimensions and return new dimensions
  */
-var applyScale = function(dim, opts)
+var applyScale = function(dim, scale)
 {
-  var unit_scale = 1
-    , newDim     = {}
-    ;
-  if(opts.unit === "cm") unit_scale = 10;
-
-  newDim.length = dim.length * unit_scale * opts.scale;
-  newDim.width  = dim.width * unit_scale * opts.scale;
-  newDim.height = dim.height * unit_scale * opts.scale;
-  newDim.area   = round2(dim.area * Math.pow(unit_scale * opts.scale,2));
-  newDim.volume = round2(dim.volume * Math.pow(unit_scale * opts.scale,3));
+  var newDim = {};
+  newDim.length = dim.length * scale;
+  newDim.width  = dim.width * scale;
+  newDim.height = dim.height * scale;
+  newDim.area   = utils.round2(dim.area * Math.pow(scale,2));
+  newDim.volume = utils.round2(dim.volume * Math.pow(scale,3));
 
   return newDim;
 };
 
 /**
- * Get min/max scale
+ * Get min/max scale according to MIN and MAX dimensions and the unit
  */
-var getMinMaxScale = function(dim)
+var getMinMaxScale = function(dim, unit)
 {
-  var maxScaleW = MAX_DIM.width / dim.width
-    , maxScaleL = MAX_DIM.length / dim.length
-    , maxScaleH = MAX_DIM.height / dim.height
+  var unit_scale = 1;
+
+  if(unit === "cm") unit_scale = 10;
+
+  var maxScaleW = MAX_DIM.width / (dim.width * unit_scale)
+    , maxScaleL = MAX_DIM.length / (dim.length * unit_scale)
+    , maxScaleH = MAX_DIM.height / (dim.height * unit_scale)
     ;
 
-  var minScaleW = MIN_DIM.width / dim.width
-    , minScaleL = MIN_DIM.length / dim.length
-    , minScaleH = MIN_DIM.height / dim.height
+  var minScaleW = MIN_DIM.width / (dim.width * unit_scale)
+    , minScaleL = MIN_DIM.length / (dim.length * unit_scale)
+    , minScaleH = MIN_DIM.height / (dim.height * unit_scale)
     ;
 
-  var maxScale = parseFloat(Math.min(maxScaleW, maxScaleL, maxScaleH).toFixed(1));
-  var minScale = parseFloat(Math.min(minScaleW, minScaleL, minScaleH).toFixed(1));
+  var maxScale = utils.truncateDecimals(Math.min(maxScaleW, maxScaleL, maxScaleH), 1);
+  var minScale = utils.truncateDecimals(Math.min(minScaleW, minScaleL, minScaleH), 1);
+  if(maxScale === 0) maxScale = 0.1;
+  if(minScale === 0) minScale = 0.1;
 
   return {'max' : maxScale, 'min' : minScale};
 };
 
+/**
+ * Check if dimensions of the model are > MAXDIM according to the scale & the unit
+ */
+var isTooBig = function(dim, opts)
+{
+    var unit_scale = 1;
+    if(opts.unit === "cm") unit_scale = 10;
+    var tmp_dim = applyScale(dim, opts.scale);
+
+    return (tmp_dim.length * unit_scale > MAX_DIM.length || tmp_dim.width * unit_scale > MAX_DIM.width || tmp_dim.height * unit_scale > MAX_DIM.height);
+};
+
+/**
+ * Check if dimensions of the model are < MINDIM according to the scale & the unit
+ */
+var isTooSmall = function(dim, opts)
+{
+    var unit_scale = 1;
+    if(opts.unit === "cm") unit_scale = 10;
+    var tmp_dim = applyScale(dim, opts.scale);
+
+    return (tmp_dim.length * unit_scale < MIN_DIM.length || tmp_dim.width * unit_scale < MIN_DIM.width || tmp_dim.height * unit_scale < MIN_DIM.height);
+};
+
+/**
+ * Calculate price according to the volume
+ */
 var calculatePrice = function(volume)
 {
   return volume * PRICE_MM3; // volume * price of 1 mm3
 };
 
 /**
- * Round float to 2 decimals
+ * Return dimensions that will be displayed
  */
-var round2 = function(val)
+var getDimensionsForDisplay = function(dim, unit)
 {
-  return parseFloat(val.toFixed(2));
+  var unit_scale = 1
+    , newDim     = {}
+    ;
+
+  if(unit === "cm") unit_scale = 10;
+
+  newDim.length = dim.length / unit_scale;
+  newDim.width  = dim.width / unit_scale;
+  newDim.height = dim.height / unit_scale;
+  newDim.area   = utils.round2(dim.area / Math.pow(unit_scale,2));
+  newDim.volume = utils.round2(dim.volume / Math.pow(unit_scale,3));
+
+  return newDim;
 };

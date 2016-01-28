@@ -10,7 +10,7 @@
 
 @section('body')
 
-    @include('breadcrumbs', array('breadcrumb_title' => 'Mot de passe oublié'))
+    @include('breadcrumbs', array('breadcrumb_title' => 'Mot de passe oublié', 'breadcrumb_list' => [['Accueil','/'], ['Mot de passe oublié','/password/email']]))
 
     <div class="container">
         <div class="row mar-b-50">

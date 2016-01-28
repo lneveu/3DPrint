@@ -10,7 +10,7 @@
 
 @section('body')
 
-    @include('breadcrumbs', array('breadcrumb_title' => 'Inscription'))
+    @include('breadcrumbs', array('breadcrumb_title' => 'Inscription', 'breadcrumb_list' => [['Accueil','/'], ['Inscription','/register']]))
 
     <div class="container">
         <div class="row mar-b-50">
