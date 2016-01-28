@@ -36,6 +36,8 @@ class AjaxController extends Controller
                 if($request->has('length')) $model->length = $request->get('length');
                 if($request->has('width')) $model->width = $request->get('width');
                 if($request->has('height')) $model->height = $request->get('height');
+                if($request->has('volume')) $model->volume = $request->get('volume');
+                if($request->has('surface')) $model->surface = $request->get('surface');
 
                 $model->save();
 

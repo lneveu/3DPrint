@@ -289,7 +289,10 @@
                         'price' : parseFloat($('#price').text()),
                         'length' : parseFloat($('#length').text()),
                         'width' : parseFloat($('#width').text()),
-                        'height' : parseFloat($('#height').text())
+                        'height' : parseFloat($('#height').text()),
+                        'volume' : parseFloat($('#volume').text()),
+                        'surface' : parseFloat($('#surface').text())
+
 
                     });
             $.ajax({
