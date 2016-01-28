@@ -20,8 +20,8 @@ class CreateModelsTable extends Migration
             $table->float('length');
             $table->float('height');
             $table->float('width');
-            $table->float('volume');
-            $table->float('surface');
+            $table->double('volume', 15, 8);
+            $table->double('surface', 15, 8);
             $table->float('price');
             $table->float('scale');
             $table->float('scale_min');
