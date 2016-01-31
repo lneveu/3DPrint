@@ -12,4 +12,9 @@ class Model extends \Illuminate\Database\Eloquent\Model
     {
         return $this->belongsTo('App\User');
     }
+
+    public function order()
+    {
+        return $this->hasOne('App\Models\Order');
+    }
 }

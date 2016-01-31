@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\PasswordChangeRequest;
 use App\Http\Requests\UpdateAccountRequest;
+use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -42,7 +43,7 @@ class UserController extends Controller
         return view('user.change-password');
     }
 
-    public function postPasswordChange(PasswordChangeRequest $request)
+    public function postPasswordChange(UpdatePasswordRequest $request)
     {
         $user = \Auth::user();
         $user->password = bcrypt($request->get('password'));

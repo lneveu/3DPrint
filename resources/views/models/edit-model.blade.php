@@ -16,11 +16,12 @@
 
         <div class="row mar-b-50">
             <div class="col-md-8">
-                <form role="form" class="form-horizontal" method="POST" action="{{ url('/register') }}">
+                <form role="form" class="form-horizontal" method="POST" action="{{ url('/order/new') }}">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 
-                    <input type="hidden" id="model-id" value="{{ $model->id }}">
+                    <input type="hidden" id="model-id" name="model-id" value="{{ $model->id }}">
+                    <input type="hidden" id="state" name="state" value="{{ $model->id }}">
                     <input type="hidden" id="minscale" value="{{ $model->scale_min }}">
                     <input type="hidden" id="maxscale" value="{{ $model->scale_max }}">
                     <input type="hidden" id="scale" value="{{ $model->scale }}">
@@ -40,6 +41,14 @@
                         <div class="form-group">
                             <div class="col-md-6">
                                 <p class="error">{{ session('resize') }}</p>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if($errors->first->has('state'))
+                        <div class="form-group">
+                            <div class="col-md-6">
+                                <p class="error">{{ $errors->first->get('state') }}</p>
                             </div>
                         </div>
                     @endif
@@ -270,6 +279,7 @@
                 $('#surface').text(result.data.dimensions.area);
                 $('#volume').text(result.data.dimensions.volume);
                 $('#price').text(result.data.price);
+                $('#state').val(result.data.code);
                 $('.unit').text(result.data.opts.unit);
 
                 cb(result.data);
@@ -290,9 +300,8 @@
                         'width' : parseFloat($('#width').text()),
                         'height' : parseFloat($('#height').text()),
                         'volume' : parseFloat($('#volume').text()),
-                        'surface' : parseFloat($('#surface').text())
-
-
+                        'surface' : parseFloat($('#surface').text()),
+                        'state' : $('#state').val()
                     });
             $.ajax({
                 headers: {

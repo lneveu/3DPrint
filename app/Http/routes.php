@@ -32,6 +32,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/password/change', 'UserController@getPasswordChange');
     Route::post('/password/change', 'UserController@postPasswordChange');
 
+    // Orders
+    Route::post('/order/new', 'OrderController@postNewOrder');
+
     // Utilisateurs possède le modèle
     Route::group(['middleware' => 'userOwnModel'], function () {
 
@@ -49,6 +52,11 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Ajax Check dimensions
         Route::post('/check-dimensions', 'AjaxController@postCheckDimensions');
+    });
+
+    // Utilisateurs possède la commande
+    Route::group(['middleware' => 'userOwnOrder'], function () {
+        Route::get('/order/{id}', 'OrderController@getOrder')->where('id', '[0-9]+');
     });
 
 });

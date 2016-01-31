@@ -80,6 +80,7 @@ class ModelController extends Controller
                    $model->scale_max = $result->maxscale;
                    $model->scale_min = $result->minscale;
                    $model->price = $result->price;
+                   $model->state = 1;
 
                    $model->save();
 
