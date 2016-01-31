@@ -30,34 +30,44 @@
                                 <tr>
                                     <td colspan="2">{{ $model->title }}</td>
                                 </tr>
-                                <tr>
-                                    <td><img src="/img/default.png" alt="Default image" height="42" width="42"></td>
+                                <tr class="bd-top">
+                                    <td><img src="/img/default.png" alt="Default image" height="125" width="125"></td>
                                     <td>
-                                        <div class="form-group">
-                                            <label class="col-md-1" for="title">Prix</label>
-                                            <div class="col-md-2">
-                                                <p class="form-control-static">{{ $model->price }}</p>
-                                            </div>
-                                        </div>
-                                        <div class="form-group">
-                                            <label class="col-md-1" for="title">Quantité</label>
-                                            <div class="col-md-2">
-                                                <input type="number" id="quantity" class="form-control" name="quantity" value="{{ $order->quantity }}">
-                                            </div>
-                                        </div>
+                                        <table>
+                                        <tr>
+                                            <td>
+                                                <b>Prix</b>
+                                            </td>
+                                             <td>
+                                                 <div class="col-md-6">
+                                                     <span id="price">{{ $model->price }}</span> €
+                                                 </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <b>Quantité</b>
+                                            </td>
+                                            <td>
+                                                <div class="col-md-6">
+                                                    <input type="number" id="quantity" class="form-control" name="quantity" value="{{ $order->quantity }}" min="1">
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </table>
                                     </td>
                                 </tr>
-                                <tr>
-                                    <td>Sous-total</td>
-                                    <td>{{ $order->sub_total }}</td>
+                                <tr class="bd-top">
+                                    <td><b>Sous-total</b></td>
+                                    <td><span id="sub-total">{{ $order->sub_total }}</span> €</td>
                                 </tr>
                                 <tr>
-                                    <td>Frais de port</td>
+                                    <td><b>Frais de port</b></td>
                                     <td>{{ $order->shipping_costs }}</td>
                                 </tr>
-                                <tr>
-                                    <td>Total</td>
-                                    <td>{{ $order->total }}</td>
+                                <tr class="bd-top">
+                                    <td><b>Total</b></td>
+                                    <td><span id="total">{{ $order->total }}</span> €</td>
                                 </tr>
                             </table>
                         </div>
@@ -66,11 +76,11 @@
                     <div class="form-group">
                         <div class="col-md-12">
                             <h4>Paiement</h4>
-                            <div class="radio">
+                            <div class="radio radio-info">
                                 <input type="radio" name="radio1" id="radio1" value="option1" checked>
                                 <label for="radio1">Méthode 1</label>
                             </div>
-                            <div class="radio">
+                            <div class="radio radio-info">
                                 <input type="radio" name="radio1" id="radio2" value="option2">
                                 <label for="radio2">Méthode 2</label>
                             </div>
@@ -145,6 +155,24 @@
 
 @section('script')
     <script>
+
+        $('#quantity').on('change input keypress', function(e){
+            updatePrices();
+            if (e.keyCode == 13) {
+                e.preventDefault();
+            }
+        });
+
+        function updatePrices()
+        {
+            var price = parseFloat($('#price').text());
+            var quantity = $('#quantity').val();
+
+            var subTotal = (quantity * price).toFixed(2);
+
+            $('#sub-total').text(subTotal);
+            $('#total').text(subTotal);
+        }
 
     </script>
 

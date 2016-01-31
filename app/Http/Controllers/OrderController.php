@@ -32,13 +32,16 @@ class OrderController extends Controller
             $order->user_id = $model->user_id;
             $order->model_id = $model->id;
             $order->quantity = 1;
-            $order->sub_total = $model->price;
             $order->shipping_costs = "gratuit";
-            $order->total = $model->price;
             $order->state = "pending";
-
-            $order->save();
         }
+
+        // Update prices
+        $order->sub_total = $model->price;
+        $order->total = $order->sub_total * $order->quantity;
+        $order->save();
+
+
         return redirect('/order/'.$order->id);
 
     }

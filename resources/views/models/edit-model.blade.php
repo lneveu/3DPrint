@@ -71,7 +71,7 @@
                             <div id="soft" class="noUi-target noUi-ltr noUi-horizontal noUi-background"></div><br/><br/><br/>
                         </div>
                         <div class="col-md-2">
-                            <input type="number" id="input-format" class="form-control" name="scale" value="{{ $model->scale }}">
+                            <input type="number" id="input-format" class="form-control" step="0.01" name="scale" value="{{ $model->scale }}">
                         </div>
                     </div>
 
