@@ -3,7 +3,8 @@ Thingiview = function(containerId) {
   
   this.containerId  = containerId;
   var container     = document.getElementById(containerId);
-  
+
+  var dataUrl;
   // var stats    = null;
   var camera   = null;
   var scene    = null;
@@ -522,6 +523,14 @@ Thingiview = function(containerId) {
     }
   }
 
+  this.getCanvas = function(){
+    return testCanvas;
+  }
+  this.getRenderer = function()
+  {
+    return renderer;
+  }
+
   this.setObjectColor = function(color) {
     objectColor = parseInt(color.replace(/\#/g, ''), 16);
     
@@ -684,6 +693,10 @@ Thingiview = function(containerId) {
 
     worker.postMessage({'cmd':cmd, 'param':param});
   }
+  this.getImage = function()
+  {
+    return dataUrl;
+  };
 
   this.displayAlert = function(msg) {
     msg = msg + "<br/><br/><center><input type=\"button\" value=\"Ok\" onclick=\"document.getElementById('alertBox').style.display='none'\"></center>"

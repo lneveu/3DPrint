@@ -44,7 +44,7 @@
 </div>
 <!-- modal -->
 
-@if(old('login') || old('email') || session('login'))
+@if(old('login') || array_key_exists('remember', old()) || session('login'))
     <script>
         $(function() {
             $('#login').modal('show');

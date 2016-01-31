@@ -100,7 +100,7 @@
 
 <!--common script for all pages-->
 <script src="/js/common-scripts.js"></script>
-@include('login')
+@include('auth.login')
 @yield('script')
 
 </body>

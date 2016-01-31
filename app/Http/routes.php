@@ -24,6 +24,14 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/upload-model', 'ModelController@getUploadModel');
     Route::post('/upload-model', 'ModelController@postUploadModel');
 
+    // Account
+    Route::get('/account', 'UserController@getAccount');
+    Route::post('/account', 'UserController@postAccount');
+
+    // Change password
+    Route::get('/password/change', 'UserController@getPasswordChange');
+    Route::post('/password/change', 'UserController@postPasswordChange');
+
     // Utilisateurs possède le modèle
     Route::group(['middleware' => 'userOwnModel'], function () {
 

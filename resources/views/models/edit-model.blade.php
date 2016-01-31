@@ -25,6 +25,8 @@
                     <input type="hidden" id="maxscale" value="{{ $model->scale_max }}">
                     <input type="hidden" id="scale" value="{{ $model->scale }}">
                     <input type="hidden" id="file" value="{{ $model->file }}">
+                    <input type="hidden" id="img" value="{{ $model->img }}">
+
 
 
 
@@ -243,10 +245,7 @@
             thingiview = new Thingiview("viewer");
             thingiview.setObjectColor('#045FB4');
             thingiview.setBackgroundColor('#6E6E6E');
-            //thingiview.setCameraZoom(4);
             thingiview.setShowPlane(false);
-            //thingiview.setRotation(false);
-
             thingiview.initScene();
             thingiview.loadSTL(location.origin+"/file/"+$('#model-id').val());
 

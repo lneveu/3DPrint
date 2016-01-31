@@ -27,7 +27,7 @@
                       </a>
                       <ul class="dropdown-menu">
                         <li>
-                          <a href="{{ url('/') }}">Mes informations personnelles</a>
+                          <a href="{{ url('/account') }}">Mes informations personnelles</a>
                         </li>
                         <li>
                           <a href="{{ url('/') }}">Mes modèles</a>

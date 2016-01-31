@@ -18,34 +18,24 @@ class AjaxController extends Controller
             $id = $request->get('id');
             $model = Model::findOrFail($id);
 
-            if($model->user_id !== \Auth::user()->id)
-            {
-                return response()->json([
-                    'error' => true,
-                    'message' => 'you are not allowed to update this model'
-                ], 422);
-            }
-            else
-            {
-                if($request->has('title')) $model->title = $request->get('title');
-                if($request->has('scale')) $model->scale = $request->get('scale');
-                if($request->has('scalemin')) $model->scale_min = $request->get('scalemin');
-                if($request->has('scalemax')) $model->scale_max = $request->get('scalemax');
-                if($request->has('unit')) $model->unit = $request->get('unit');
-                if($request->has('price')) $model->price = $request->get('price');
-                if($request->has('length')) $model->length = $request->get('length');
-                if($request->has('width')) $model->width = $request->get('width');
-                if($request->has('height')) $model->height = $request->get('height');
-                if($request->has('volume')) $model->volume = $request->get('volume');
-                if($request->has('surface')) $model->surface = $request->get('surface');
+            if($request->has('title')) $model->title = $request->get('title');
+            if($request->has('scale')) $model->scale = $request->get('scale');
+            if($request->has('scalemin')) $model->scale_min = $request->get('scalemin');
+            if($request->has('scalemax')) $model->scale_max = $request->get('scalemax');
+            if($request->has('unit')) $model->unit = $request->get('unit');
+            if($request->has('price')) $model->price = $request->get('price');
+            if($request->has('length')) $model->length = $request->get('length');
+            if($request->has('width')) $model->width = $request->get('width');
+            if($request->has('height')) $model->height = $request->get('height');
+            if($request->has('volume')) $model->volume = $request->get('volume');
+            if($request->has('surface')) $model->surface = $request->get('surface');
 
-                $model->save();
+            $model->save();
 
-                return response()->json([
-                    'success' => true,
-                    'message' => 'model updated'
-                ], 200);
-            }
+            return response()->json([
+                'success' => true,
+                'message' => 'model updated'
+            ], 200);
         }
         return response()->json([
             'error' => true,
@@ -72,6 +62,48 @@ class AjaxController extends Controller
 
             $result = curl_exec($ch);
             $result = json_decode($result);
+
+            return response()->json([
+                'success' => true,
+                'data' => $result
+            ], 200);
+        }
+        return response()->json([
+            'error' => true,
+            'message' => 'bad request'
+        ], 422);
+    }
+
+    public function postSaveImage(Request $request)
+    {
+        if($request->ajax() && $request->has('img') && $request->has('id'))
+        {
+            // Retrieve img
+            $file = $request->file('img');
+            $fileName = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
+            $originalName = $fileName;
+            $extension = $request->file('file')->getClientOriginalExtension();
+            $fileName .= ".".$extension;
+
+            $id = \Auth::user()->id;
+            $path = storage_path().'/models/'.$id.'/';
+            if(!is_dir($path)) mkdir($path);
+
+            // Rename if file exists
+            $i = 1;
+            while(file_exists($path.$fileName))
+            {
+                $actual_name = $originalName.$i;
+                $fileName = $actual_name.".".$extension;
+                $i++;
+            }
+
+            // Save file
+            $request->file('file')->move($path, $fileName);
+
+            $id = $request->get('id');
+            $model = Model::findOrFail($id);
+
 
             return response()->json([
                 'success' => true,
