@@ -30,10 +30,10 @@
                           <a href="{{ url('/account') }}">Mes informations personnelles</a>
                         </li>
                         <li>
-                          <a href="{{ url('/') }}">Mes modèles</a>
+                          <a href="{{ url('/models') }}">Mes modèles</a>
                         </li>
                         <li>
-                          <a href="{{ url('/') }}">Mes commandes</a>
+                          <a href="{{ url('/orders') }}">Mes commandes</a>
                         </li>
                         <li>
                           <a href="{{ url('/logout') }}">Se déconnecter</a>

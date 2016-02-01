@@ -32,8 +32,11 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/password/change', 'UserController@getPasswordChange');
     Route::post('/password/change', 'UserController@postPasswordChange');
 
-    // Orders
+    // New order
     Route::post('/order/new', 'OrderController@postNewOrder');
+
+    // My models
+    Route::get('/models', 'UserController@getModels');
 
     // Utilisateurs possède le modèle
     Route::group(['middleware' => 'userOwnModel'], function () {

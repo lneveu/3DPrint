@@ -51,4 +51,12 @@ class UserController extends Controller
         return redirect('/account')->with(['ok' => 'Votre mot de passe a bien été changé']);
     }
 
+    public function getModels()
+    {
+        $user = \Auth::user();
+        $models = $user->models;
+
+        return view('user.models')->with(['models' => $models]);
+    }
+
 }
