@@ -79,6 +79,7 @@
 <script src="/js/superfish.js"></script>
 <script src="/js/nouislider.min.js"></script>
 <script src="/js/wNumb.js"></script>
+<script src="/js/sorttable.js"></script>
 
 
 <script src="/thingiview/javascripts/Three.js"></script>

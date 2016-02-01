@@ -21,7 +21,7 @@
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 
                     <input type="hidden" id="model-id" name="model-id" value="{{ $model->id }}">
-                    <input type="hidden" id="state" name="state" value="{{ $model->id }}">
+                    <input type="hidden" id="state" name="state" value="{{ $model->state }}">
                     <input type="hidden" id="minscale" value="{{ $model->scale_min }}">
                     <input type="hidden" id="maxscale" value="{{ $model->scale_max }}">
                     <input type="hidden" id="scale" value="{{ $model->scale }}">

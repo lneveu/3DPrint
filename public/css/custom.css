@@ -192,3 +192,10 @@ span.error{
 table th, td{
     border: none !important;
 }
+
+table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+    content: " \25BE"
+}
+table th:hover{
+    cursor: pointer;
+}

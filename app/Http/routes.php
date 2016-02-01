@@ -38,6 +38,9 @@ Route::group(['middleware' => 'auth'], function () {
     // My models
     Route::get('/models', 'UserController@getModels');
 
+    // My orders
+    Route::get('/orders', 'UserController@getOrders');
+
     // Utilisateurs possède le modèle
     Route::group(['middleware' => 'userOwnModel'], function () {
 

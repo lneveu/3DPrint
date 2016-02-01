@@ -6,6 +6,7 @@ use App\Http\Requests\PasswordChangeRequest;
 use App\Http\Requests\UpdateAccountRequest;
 use App\Http\Requests\UpdatePasswordRequest;
 use App\Models\Model;
+use App\Models\Order;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File;
@@ -57,6 +58,14 @@ class UserController extends Controller
         $models = $user->models;
 
         return view('user.models')->with(['models' => $models]);
+    }
+
+    public function getOrders()
+    {
+        $user = \Auth::user();
+        $orders = Order::where('user_id', '=', $user->id)->paginate(15);
+
+        return view('user.orders')->with(['orders' => $orders]);
     }
 
 }

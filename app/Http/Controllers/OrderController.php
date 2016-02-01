@@ -33,7 +33,7 @@ class OrderController extends Controller
             $order->model_id = $model->id;
             $order->quantity = 1;
             $order->shipping_costs = "gratuit";
-            $order->state = "pending";
+            $order->state = "En attente de paiement";
         }
 
         // Update prices
