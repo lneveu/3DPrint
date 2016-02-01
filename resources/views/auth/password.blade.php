@@ -17,7 +17,7 @@
             @if(session()->has('status'))
                 <div class="col-md-2"></div>
                 <div class="col-md-8">
-                    <h4 class="alert alert-success text-center">{{ session()->get('status') }}</h4>
+                    <h4 class="alert alert-success alert-dismissible alert-fade text-center">{{ session()->get('status') }}</h4>
                 </div>
                 <div class="col-md-2"></div>
 

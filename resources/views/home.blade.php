@@ -12,7 +12,7 @@
     @if(session()->has('status'))
         <div class="col-md-4"></div>
         <div class="col-md-4">
-            <p class="alert alert-success text-center">{{ session()->get('status') }}</p>
+            <p class="alert alert-success alert-dismissible alert-fade text-center">{{ session()->get('status') }}</p>
         </div>
         <div class="col-md-4"></div>
 
