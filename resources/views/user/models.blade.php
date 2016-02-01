@@ -14,6 +14,10 @@
     <div class="container">
 
         <div class="row">
+            @if(session()->has('ok'))
+                <p class="alert alert-success text-center">{{ session()->get('ok') }}</p>
+            @endif
+
             @foreach($models as $model)
                 <div class="col-md-3">
                     <div class="thumbnail">

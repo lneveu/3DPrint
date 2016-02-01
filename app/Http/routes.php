@@ -15,6 +15,21 @@ Route::get('/', function () {
     return view('home');
 });
 
+// Notre expertise
+Route::get('/expertise', function(){
+    return view('others.expertise');
+});
+
+// Conditions générales
+Route::get('/legal', function(){
+    return view('others.legal');
+});
+
+// Politique de confidentialité
+Route::get('/privacy', function(){
+    return view('others.privacy');
+});
+
 // Utilisateurs connect�s seulement
 Route::group(['middleware' => 'auth'], function () {
     // Logout

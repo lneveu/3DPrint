@@ -170,10 +170,12 @@ class ModelController extends Controller
     public function getDeleteModel($id)
     {
         $model = Model::findOrFail($id);
+        $order = $model->order;
+        if(!is_null($order)) $order->delete();
         unlink($model->file);
         $model->delete();
 
-        return redirect('/')->with(['ok' => 'Votre modèle a bien été supprimé.']);
+        return redirect('/models')->with(['ok' => 'Votre modèle a bien été supprimé.']);
 
 
 

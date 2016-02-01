@@ -15,7 +15,7 @@
                     <a href="{{ url('/') }}">Accueil</a>
                 </li>
                 <li>
-                    <a href="{{ url('/') }}">Notre expertise</a>
+                    <a href="{{ url('/expertise') }}">Notre expertise</a>
                 </li>
                 <li>
                     <a href="{{ url('/upload-model') }}"><span>Imprimer votre objet</span></a>

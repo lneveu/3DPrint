@@ -12,7 +12,7 @@
                 </div>
                 <div class="col-md-4">
                   <div class="legal">
-                    <a href="{{ url('/') }}">Conditions générales</a> | <a href="{{ url('/') }}">Politique de confidentialité</a>
+                    <a href="{{ url('/legal') }}">Conditions générales</a> | <a href="{{ url('/privacy') }}">Politique de confidentialité</a>
                   </div>
                   <div class="copyright">
                     <p>Droits réservés Jouve © 2015</p>
