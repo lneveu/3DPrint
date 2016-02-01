@@ -215,27 +215,32 @@ span.error{
     border-top: 1px solid #ddd;
 }
 
-table th, td{
-    border: none !important;
-}
-
-table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
-    content: " \25BE"
-}
-table th:hover{
-    cursor: pointer;
-}
-
 .caption h3{
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
+/* ORDERS */
+.orders-table td, th {
+    vertical-align: middle !important;
+}
+.orders-table th, td{
+    border: none !important;
+}
+
+.orders-table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sorttable_nosort):after {
+    content: " \25BE"
+}
+.orders-table th:hover{
+    cursor: pointer;
+}
+
 .pagination > .active > span{
-    background-color: #4fc1e9;
-    border-color: #4fc1e9;
+    background-color: rgb(235,105,9);
+    border-color: rgb(235,105,9);
 }
 .pagination > .active > span:hover{
-    background-color: #4fc1e9;
-    border-color: #4fc1e9;
+    background-color: rgba(235,105,9,0.80);
+    border-color: rgba(235,105,9,0.80);
 }
+/* end ORDERS */
