@@ -15,6 +15,9 @@
                     <a href="{{ url('/') }}">Accueil</a>
                 </li>
                 <li>
+                    <a href="{{ url('/3dprint') }}">L'impression 3D</a>
+                </li>
+                <li>
                     <a href="{{ url('/expertise') }}">Notre expertise</a>
                 </li>
                 <li>

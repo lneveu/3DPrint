@@ -20,6 +20,11 @@ Route::get('/expertise', function(){
     return view('others.expertise');
 });
 
+// Impression 3D
+Route::get('/3dprint', function(){
+    return view('others.3dprint');
+});
+
 // Conditions générales
 Route::get('/legal', function(){
     return view('others.legal');
@@ -99,4 +104,3 @@ Route::group(['middleware' => 'guest'], function () {
     Route::get('password/reset/{token}', 'Auth\PasswordController@getReset');
     Route::post('password/reset', ['as' => 'password.reset.post', 'uses' => 'Auth\PasswordController@postReset']);
 });
-
