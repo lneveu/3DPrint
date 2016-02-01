@@ -31,13 +31,13 @@
                     </div>
                 </div>
             @endforeach
+
         </div>
     </div>
 @stop
 
 @section('script')
     <script>
-
+        $( ".thumbnail:last" ).css('margin-bottom', "100px");
     </script>
-
 @stop

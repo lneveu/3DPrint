@@ -34,7 +34,7 @@
                         </tr>
                     @endforeach
                 </table>
-                {!! $orders->render() !!}
+                <div class="center">{!! $orders->render() !!}</div>
             </div>
             <div class="col-md-1"></div>
         </div>

@@ -199,3 +199,17 @@ table.sortable th:not(.sorttable_sorted):not(.sorttable_sorted_reverse):not(.sor
 table th:hover{
     cursor: pointer;
 }
+
+.caption h3{
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pagination > .active > span{
+    background-color: #4fc1e9;
+    border-color: #4fc1e9;
+}
+.pagination > .active > span:hover{
+    background-color: #4fc1e9;
+    border-color: #4fc1e9;
+}

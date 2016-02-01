@@ -63,7 +63,7 @@ class UserController extends Controller
     public function getOrders()
     {
         $user = \Auth::user();
-        $orders = Order::where('user_id', '=', $user->id)->paginate(15);
+        $orders = Order::where('user_id', '=', $user->id)->paginate(5);
 
         return view('user.orders')->with(['orders' => $orders]);
     }
