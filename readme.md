@@ -1,4 +1,27 @@
 # 3DPrint
+
+## Sommaire
+* Prérequis
+* Serveur de vérification
+* Installation sur un envrionnement Linux
+
+## Prérequis
+- NodeJS (version >= 5.4.0)
+- Python 2.7 (version >= 3 ne fonctionne pas)
+
+
+## Serveur de vérification
+Le serveur écoute sur le port 8080.
+
+Avant de lancer le server, s'assurer que tous les modules sont installés en exécutant dans le dossier 'models-validation' la commande 
+
+	$ npm install
+
+Lancer le serveur avec
+
+	$ node server.js
+
+
 ## Installation sur un environnement Linux
 
 ###I) Installer composer:
