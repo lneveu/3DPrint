@@ -194,9 +194,9 @@ var getDimensions = function(geometry)
 var applyScale = function(dim, scale)
 {
   var newDim = {};
-  newDim.length = dim.length * scale;
-  newDim.width  = dim.width * scale;
-  newDim.height = dim.height * scale;
+  newDim.length = utils.round2(dim.length * scale);
+  newDim.width  = utils.round2(dim.width * scale);
+  newDim.height = utils.round2(dim.height * scale);
   newDim.area   = utils.round2(dim.area * Math.pow(scale,2));
   newDim.volume = utils.round2(dim.volume * Math.pow(scale,3));
 

@@ -16,7 +16,7 @@ module.exports =
         var R = new THREE.Vector3(geometry.vertices[Ri].x, geometry.vertices[Ri].y, geometry.vertices[Ri].z);
         volume += volumeOfT(P, Q, R);
     }
-    return Math.round(Math.abs(volume));
+    return Math.abs(volume);
   }
 
   , calculateArea : function(geometry)
