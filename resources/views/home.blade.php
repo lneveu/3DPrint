@@ -32,7 +32,7 @@
               <p>
                 <i>3DPaper est une plateforme simple d'utilisation qui vous permet d'imprimer tous vos modèles 3D en papier !</i>
               </p>
-              <a href="{{ url('/') }}" class="btn btn-info btn-lg da-link">
+              <a href="{{ url('/upload-model') }}" class="btn btn-info btn-lg da-link">
                 Imprimer mon objet
               </a>
               <div class="da-img">
@@ -57,7 +57,7 @@
               <p>
                 <i>Des objets en très haute définition, avec des couleurs fidèles à la réalité !</i>
               </p>
-              <a href="{{ url('/') }}" class="btn btn-info btn-lg da-link">
+              <a href="{{ url('/3dprint') }}" class="btn btn-info btn-lg da-link">
                 En savoir plus
               </a>
               <div class="da-img">
@@ -82,7 +82,7 @@
               <p>
                 <i>Technologie MCor basée sur le procédé SDL</i>
               </p>
-              <a href="{{ url('/') }}" class="btn btn-info btn-lg da-link">
+              <a href="{{ url('/expertise') }}" class="btn btn-info btn-lg da-link">
                 En savoir plus
               </a>
               <div class="da-img">
@@ -194,7 +194,7 @@
               L'impression 3D est une technique de fabrication numérique dite additive. A partir d'un modèle numérique, l'imprimante est capable de créer un objet physique en 3 dimensions en additionnant une multitude de couches d'un matériau.
               <br/>3DPaper est une plateforme spécialisée dans l'impression d'objet en papier : l'imprimante que nous utilisons superpose des feuilles de papier clasiques, les colle entre elles puis les découpe suivant la forme de l'objet.
               <br/><br/>
-              Envie d'en savoir plus ? Consulter <a href="{{ url('/') }}">notre page dédiée à l'impression 3D</a>.
+              Envie d'en savoir plus ? Consulter <a href="{{ url('/3dprint') }}">notre page dédiée à l'impression 3D</a>.
             </p>
             </div>
           </div>
@@ -206,7 +206,7 @@
                 <br>Une fois validé, vous avez la possibilité de le visualiser en 3D et de l'éditer.
                 Vous pourrez ensuite procéder à la commande de l'objet. Nous nous chargerons de l'imprimer et de vous l'expedier dans les plus bref délais.
                 <br/><br/><br/><br/>
-                Vous souhaitez plus de détails ? Consultez <a href="{{ url('/') }}">notre page sur le processus de production</a>.
+                Vous souhaitez plus de détails ? Consultez <a href="{{ url('/expertise') }}">notre page sur le processus de production</a>.
               </p>
             </div>
             <div class="col-lg-6 col_img">
