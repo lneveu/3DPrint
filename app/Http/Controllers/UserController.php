@@ -23,15 +23,15 @@ class UserController extends Controller
     public function postAccount(UpdateAccountRequest $request)
     {
         $user = Auth::user();
-        if($request->has('civility')) $user->civility = $request->get('civility');
-        if($request->has('name')) $user->name = $request->get('name');
-        if($request->has('firstname')) $user->firstname = $request->get('firstname');
-        if($request->has('email')) $user->email = $request->get('email');
-        if($request->has('phone')) $user->phone = $request->get('phone');
-        if($request->has('address')) $user->address = $request->get('address');
-        if($request->has('address_cpl')) $user->address_cpl = $request->get('address_cpl');
-        if($request->has('cp')) $user->cp = $request->get('cp');
-        if($request->has('city')) $user->city = $request->get('city');
+        $user->civility = $request->get('civility');
+        $user->name = $request->get('name');
+        $user->firstname = $request->get('firstname');
+        $user->email = $request->get('email');
+        $user->phone = $request->get('phone');
+        $user->address = $request->get('address');
+        $user->address_cpl = $request->get('address_cpl');
+        $user->cp = $request->get('cp');
+        $user->city = $request->get('city');
 
         $user->save();
 

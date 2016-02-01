@@ -68,7 +68,7 @@
                         <div class="col-md-4">
                             <label>Téléphone</label>
                             @if($errors->default->has('phone'))<span class="error">{{ $errors->default->first('phone') }}</span>@endif
-                            <input type="text" class="form-control @if($errors->default->has('phone')){{ "error-border" }}@endif" name="phone" placeholder="Téléphone" value="{{ $user->phone }}">
+                            <input type="tel" class="form-control @if($errors->default->has('phone')){{ "error-border" }}@endif" name="phone" placeholder="Téléphone" value="{{ $user->phone }}" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$">
                         </div>
                     </div>
 

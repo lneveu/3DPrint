@@ -136,7 +136,7 @@
                         <div class="form-group">
                             <div class="col-md-12">
                                 <label>Téléphone</label>
-                                <input type="text" class="form-control" name="phone" placeholder="Téléphone" value="{{ $user->phone }}">
+                                <input type="tel" class="form-control" name="phone" placeholder="Téléphone" value="{{ $user->phone }}" pattern="^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$">
                             </div>
                         </div>
 

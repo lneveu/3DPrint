@@ -2,10 +2,7 @@
 /node_modules
 Homestead.yaml
 Homestead.json
-.idea/workspace.xml
-**/.idea/workspace.xml
 .env
 .idea/*
-storage/models/*
 auth.json
 .xml
