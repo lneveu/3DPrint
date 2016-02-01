@@ -1,43 +1,35 @@
 var Script = function () {
-
-
-//    tool tips
-
+    // tool tips
     $('.tooltips').tooltip();
-
-//    popovers
-
+    // popovers
     $('.popovers').popover();
-
-//    bxslider
-
-    // $('.bxslider').show();
-    // $('.bxslider').bxSlider({
-    //     minSlides: 4,
-    //     maxSlides: 4,
-    //     slideWidth: 276,
-    //     slideMargin: 20
-    // });
-
 }();
 
-	(function() {
+(function() {
+    // DOM READY
+    $( document ).ready(function()
+    {
+        // fadeout auto alert-fade elements
+        $('.alert-fade').fadeTo(3000, 500).fadeOut(500, function()
+        {
+            $(this).alert('close');
+        });
+    });
 
-   			$('<i id="back-to-top"></i>').appendTo($('body'));
 
-			$(window).scroll(function() {
+	$('<i id="back-to-top"></i>').appendTo($('body'));
 
-				if($(this).scrollTop() != 0) {
-					$('#back-to-top').fadeIn();	
-				} else {
-					$('#back-to-top').fadeOut();
-				}
+	$(window).scroll(function() {
 
-			});
-			
-			$('#back-to-top').click(function() {
-				$('body,html').animate({scrollTop:0},600);
-			});	
+		if($(this).scrollTop() != 0) {
+			$('#back-to-top').fadeIn();
+		} else {
+		          $('#back-to-top').fadeOut();
+		}
 
-	})();
+	});
 
+	$('#back-to-top').click(function() {
+		$('body,html').animate({scrollTop:0},600);
+	});
+})();

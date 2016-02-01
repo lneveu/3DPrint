@@ -140,6 +140,7 @@ ul.dropdown-menu { border: none }
     border-bottom: 1px solid #F3E8E8;
 }
 /*search*/
+/*
 .search {
     margin-top: 3px;
     border-radius: 0px;
@@ -171,7 +172,7 @@ ul.dropdown-menu { border: none }
     color: #c8c8c8;
     font-weight: 300;
     margin-left: 10px;
-}
+}*/
 /*homepage features*/
 .feature-head { padding: 10px 0 }
 .feature-head h1 {

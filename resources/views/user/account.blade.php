@@ -19,17 +19,11 @@
                 <form role="form" class="form-horizontal" method="POST" action="{{ url('/account') }}">
                     {!! csrf_field() !!}
 
-
-                    <div class="form-group">
-                        <div class="col-md-4">
-                        </div>
-                        <div class="col-md-6">
-                            @if(session()->has('ok'))
-                                <span class="alert alert-success text-center">{{ session()->get('ok') }}</span>
-                            @endif
-                        </div>
+                    @if(session()->has('ok'))
+                    <div class="alert alert-success alert-dismissible alert-fade text-center">
+                        {{ session()->get('ok') }}
                     </div>
-
+                    @endif
 
                     <div class="form-group">
                         <div class="col-md-4">
@@ -43,13 +37,14 @@
                             <select class="form-control" name="civility">
                                 <option value="M.">M.</option>
                                 <option value="Mme" @if($user->civility == "Mme"){{ "selected" }}@endif>Mme</option>
+                                <option value="Mlle" @if($user->civility == "Mlle"){{ "selected" }}@endif>Mlle</option>
                             </select>
                         </div>
 
                         <div class="col-md-4">
                             <label>Nom</label>
                             @if($errors->default->has('name'))<span class="error">{{ $errors->default->first('name') }}</span>@endif
-                            <input type="text" class="form-control @if($errors->default->has('name')){{ "error-border" }}@endif" name="name" placeholder="Nom" value="{{ $user->name }}">
+                            <input type="text" class="form-control @if($errors->default->has('name')){{ "error-border" }}@endif" name="name" placeholder="Nom" value="{{ $user->name }}" required>
                         </div>
 
                         <div class="col-md-4">
@@ -62,7 +57,7 @@
                         <div class="col-md-4">
                             <label>Email</label>
                             @if($errors->default->has('email'))<span class="error">{{ $errors->default->first('email') }}</span>@endif
-                            <input type="email" class="form-control @if($errors->default->has('email')){{ "error-border" }}@endif" name="email" placeholder="Email" value="{{ $user->email }}">
+                            <input type="email" class="form-control @if($errors->default->has('email')){{ "error-border" }}@endif" name="email" placeholder="Email" value="{{ $user->email }}" required>
                         </div>
 
                         <div class="col-md-4">
@@ -103,10 +98,8 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-8">
-                        </div>
-                        <div class="col-md-2">
-                            <input type="submit" class="btn btn-lg btn-login" value="Enregister">
+                        <div class="col-md-12">
+                        <input type="submit" class="btn btn-lg btn-login float-right" value="Enregister">
                         </div>
                     </div>
 

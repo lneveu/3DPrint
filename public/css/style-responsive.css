@@ -49,9 +49,9 @@
         padding: 0;
     }
 
-    .search, .bx-controls-direction {
+    /*.search, .bx-controls-direction {
         display: none;
-    }
+    }*/
 
     .tweet-box {
         margin-bottom: 20px;
