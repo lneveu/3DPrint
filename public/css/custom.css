@@ -125,6 +125,13 @@ body {
     border-top: 1px solid #C5C5C5;
 }
 /* end UPLOADMODEL */
+
+/* CONTACT */
+.contact-message-area {
+    resize: vertical;
+}
+/* end CONTACT */
+
 .navbar-default .navbar-brand .orange{
     color: rgb(235,105,9);
 }

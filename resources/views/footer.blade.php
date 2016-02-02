@@ -10,9 +10,9 @@
                         <li class="wow flipInX" data-wow-duration="2s" data-wow-delay=".5s"><a href="http://twitter.com/groupejouve"><i class="fa fa-twitter"></i></a></li>
                     </ul>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-5">
                   <div class="legal">
-                    <a href="{{ url('/legal') }}">Conditions générales</a> | <a href="{{ url('/privacy') }}">Politique de confidentialité</a>
+                    <a href="{{ url('/legal') }}">Conditions générales</a> | <a href="{{ url('/privacy') }}">Politique de confidentialité</a> | <a href="{{ url('/contact') }}">Contact</a>
                   </div>
                   <div class="copyright">
                     <p>Droits réservés Jouve © 2015</p>

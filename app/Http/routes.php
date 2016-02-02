@@ -35,6 +35,10 @@ Route::get('/privacy', function(){
     return view('others.privacy');
 });
 
+// Contact
+Route::get('/contact', 'ContactController@getContact');
+Route::post('/contact', 'ContactController@postContact');
+
 // Utilisateurs connect�s seulement
 Route::group(['middleware' => 'auth'], function () {
     // Logout

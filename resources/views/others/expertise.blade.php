@@ -23,6 +23,9 @@
             <p> &nbsp; </p>
             <h3>Processus de production</h3>
             <p> &nbsp; </p>
+            <a href="{{ url('/contact') }}" class="btn btn-orange btn-lg">
+              Contactez-nous
+            </a>
         </div>
     </div>
     <div class="footer-handler"></div>
