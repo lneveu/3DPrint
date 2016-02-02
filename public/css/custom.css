@@ -118,6 +118,13 @@ body {
     border-width: 1px 1px;
 }
 /* end MYMODELS*/
+
+/* UPLOAD MODEL */
+.upload-model-infos {
+    margin-top: 30px;
+    border-top: 1px solid #C5C5C5;
+}
+/* end UPLOADMODEL */
 .navbar-default .navbar-brand .orange{
     color: rgb(235,105,9);
 }
