@@ -20,13 +20,14 @@ PaperViewer = function()
         , ground_y         = 2000
 
         , geometry         = null
+        , center           = null
         , mesh             = null
         , size             = null
 
         , reg_ext          = /(?:\.([^.]+))?$/
         ;
 
-    this.init = function(containerID, path, ext)
+    this.init = function(containerID, path, ext, onFinish)
     {
         container = document.getElementById(containerID);
         container_width = container.offsetWidth;
@@ -57,12 +58,12 @@ PaperViewer = function()
         if(ext === "stl")
         {
             loader = new THREE.STLLoader();
-            loadModel(loader, path);
+            loadModel(loader, path, onFinish);
         }
         else if(ext === "obj")
         {
             loader = new THREE.OBJLoader();
-            loadModel(loader, path);
+            loadModel(loader, path, onFinish);
         }
         else
         {
@@ -73,8 +74,8 @@ PaperViewer = function()
         addLights();
 
         // renderer
-        renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true	} );
-        renderer.setClearColor( 0x000000, 0 );
+        renderer = new THREE.WebGLRenderer( { antialias: true, alpha: true, preserveDrawingBuffer: true });
+        renderer.setClearColor( color, 1 );
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( container_width, container_height );
         container.appendChild( renderer.domElement );
@@ -83,7 +84,7 @@ PaperViewer = function()
 
     };
 
-    var loadModel = function(loader, file)
+    var loadModel = function(loader, file, cb)
     {
         var material = new THREE.MeshPhongMaterial( { color: 0xdddddd, shininess: 30, shading: THREE.FlatShading } );
         loader.load(file, function ( geo )
@@ -116,31 +117,56 @@ PaperViewer = function()
             mesh.receiveShadow = true;
             scene.add(mesh);
 
+            center = computeSphereCenter(geometry);
             geometry.computeBoundingSphere();
             geometry.computeBoundingBox();
+
+            // center mesh
+            mesh.translateY(-center.y);
+            mesh.translateX(-center.x);
 
             var length = mesh.geometry.boundingBox.max.x - mesh.geometry.boundingBox.min.x;
             var width = mesh.geometry.boundingBox.max.y - mesh.geometry.boundingBox.min.y;
             var height = mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z;
 
             size = Math.max(length, width);
-            plane.position.y -= height / 2;
+            plane.position.set(0, 0, -height/2);
 
             // add grid helper
             grid = new THREE.GridHelper(size/2 * 4, size/2 );
             grid.setColors(color_grid, color_grid);
             grid.rotation.set(-Math.PI/2, Math.PI/2000, Math.PI);
+            grid.position.set(0, 0, center.z -height/2);
             grid.name = "grid";
             scene.add(grid);
 
-            // add fog
-            scene.fog = new THREE.Fog(color, 1, 20 * size);
+            if(size < 1)
+            {
+                // add fog
+                scene.fog = new THREE.Fog(color, 1, 40 * size);
 
-            // set maxDistance
-            controls.maxDistance = 10 * size;
+                // tweak camera & controle
+                camera.fov = 10;
+                controls.maxDistance = 20 * size;
+                camera.updateProjectionMatrix();
+            }
+            else
+            {
+                // add fog
+                scene.fog = new THREE.Fog(color, 1, 20 * size);
+
+                // set maxDistance
+                controls.maxDistance = 10 * size;
+            }
 
             // center camera
             centerCamera();
+
+            // viewer ready
+            setTimeout(function()
+            {
+                cb();
+            }, 500);
         });
     };
 
@@ -174,8 +200,6 @@ PaperViewer = function()
         if(geometry)
         {
             camera.lookAt(mesh.position);
-
-            var center = computeSphereCenter(geometry);
             camera.position.x = center.x;
             camera.position.y = center.y;
             camera.position.z = center.z;
@@ -212,5 +236,11 @@ PaperViewer = function()
         var center_y = (max_y + min_y)/2;
         var center_z = (max_z + min_z)/2;
         return new THREE.Vector3(center_x, center_y, center_z);
+    };
+
+    this.takeScreenshot = function()
+    {
+        var dataurl = renderer.domElement.toDataURL('image/png');
+        return dataurl;
     };
 };
