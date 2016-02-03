@@ -130,7 +130,7 @@ PaperViewer = function()
             var height = mesh.geometry.boundingBox.max.z - mesh.geometry.boundingBox.min.z;
 
             size = Math.max(length, width);
-            plane.position.set(0, 0, -height/2);
+            plane.position.set(0, 0, center.z -height/2);
 
             // add grid helper
             grid = new THREE.GridHelper(size/2 * 4, size/2 );

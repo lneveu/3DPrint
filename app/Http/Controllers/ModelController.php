@@ -81,18 +81,18 @@ class ModelController extends Controller
                    $model->scale_max = $result->maxscale;
                    $model->scale_min = $result->minscale;
                    $model->price = $result->price;
-                   $model->state = 1;
+                   $model->state = $result->code;
 
                    $model->save();
 
                    // Too big
                    if($result->code == 1)
                    {
-                       return redirect('/edit-model/'.$model->id)->with(['resize' => 'Attention, votre modèle a été redimensionné car il est trop grand. Nous vous conseillons de le modifié par vous-même.']);
+                       return redirect('/edit-model/'.$model->id)->with(['resize' => 'Attention, votre modèle a été redimensionné car il est trop grand. Nous vous conseillons de le modifier puis de le re-déposer sur notre site.']);
                    }
                    elseif($result->code == 2)
                    {
-                       return redirect('/edit-model/'.$model->id)->with(['resize' => 'Attention, votre modèle a été redimensionné car il est trop petit. Nous vous conseillons de le modifié par vous-même.']);
+                       return redirect('/edit-model/'.$model->id)->with(['resize' => 'Attention, votre modèle a été redimensionné car il est trop petit. Nous vous conseillons de le modifier puis de le re-déposer sur notre site.']);
                    }
                    else
                    {

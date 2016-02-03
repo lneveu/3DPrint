@@ -14,9 +14,9 @@
 
     <div class="container">
 
-        <div class="row mar-b-50">
+        <div class="row">
             <div class="col-md-6">
-                <form role="form" class="form-horizontal" method="POST" action="{{ url('/order/new') }}">
+                <form id="form-new-order" role="form" class="form-horizontal" method="POST" action="{{ url('/order/new') }}">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
 
@@ -29,8 +29,19 @@
                     <input type="hidden" id="ext" value="{{ $model->extension }}">
                     <input type="hidden" id="img" value="{{ $model->img }}">
 
+                    @if(session()->has('resize'))
+                        <div class="error alert alert-danger alert-dismissible text-center">
+                            {{ session('resize') }}
+                        </div>
+                    @endif
 
+                    @if($errors->first->has('state'))
+                        <div class="error alert alert-danger alert-dismissible text-center">
+                            {{ $errors->first->get('state') }}
+                        </div>
+                    @endif
 
+                    <div id="update_popup" class="alert alert-success text-center" style="display:none;">Modifications enregistrées</div>
 
                     <div class="form-group">
                         <div class="col-md-12">
@@ -38,47 +49,26 @@
                         </div>
                     </div>
 
-                    @if(session()->has('resize'))
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <p class="error">{{ session('resize') }}</p>
-                            </div>
-                        </div>
-                    @endif
-
-                    @if($errors->first->has('state'))
-                        <div class="form-group">
-                            <div class="col-md-12">
-                                <p class="error">{{ $errors->first->get('state') }}</p>
-                            </div>
-                        </div>
-                    @endif
-
                     <div class="form-group">
                         <label class="col-md-3" for="title">Titre</label>
                         <div class="col-md-5">
                             <input type="text" id="input-title" class="form-control" name="title" placeholder="Titre" value="{{ $model->title }}" min="5" autofocus>
                         </div>
-
-                        <div class="col-md-3">
-                            <p id="update-title"></p>
-                        </div>
-
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 col-xs-12" for="scale">Échelle</label>
+                        <label class="col-md-3 col-sm-12 col-xs-12" for="scale">Échelle</label>
                         <div class="col-md-5 col-xs-9">
                             <div id="soft" class="noUi-target noUi-ltr noUi-horizontal noUi-background"></div><br/><br/><br/>
                         </div>
-                        <div class="col-md-2 col-xs-3">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
                             <input type="number" id="input-format" class="form-control" step="0.01" name="scale" value="{{ $model->scale }}">
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3" for="scale">Unité</label>
-                        <div class="col-md-5">
+                        <label class="col-md-3 col-sm-12" for="scale">Unité</label>
+                        <div class="col-md-5 col-sm-12">
                             <div class="radio radio-info radio-inline">
                                 <input type="radio" id="inlineRadio1" value="mm" name="unit" @if($model->unit == "mm"){{"checked"}}@endif>
                                 <label for="inlineRadio1"> mm </label>
@@ -119,36 +109,66 @@
                             <p class="form-control-static"><span id="volume">{{ $model->volume }}</span> <span class="unit">{{ $model->unit }}</span>³</p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <div class="col-md-4">
-                            <p class="form-control-static"><b class="black">Prix unitaire : <span id="price">{{ $model->price }}</span> €</b></p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-md-3">
-                            <br/>
-                            <a href="{{ url('/delete-model/'.$model->id) }}" class="btn btn-danger" role="button" id="delete"><span class="glyphicon glyphicon-remove white" aria-hidden="true"></span>  Supprimer</a>
-                        </div>
-
-                        <div class="col-md-3"></div>
-
-                        <div class="col-md-3">
-                            <br/>
-                            <input type="submit" class="btn btn-lg btn-login" value="Imprimer">
-                        </div>
-                    </div>
-
                 </form>
 
             </div>
 
             <div class="col-md-6">
                 <div id="viewer"></div>
+                    <!-- warning -->
+                    @if($model->state == "1" && !session()->has('resize'))
+                        <div class="alert alert-danger text-center warning-msg">
+                            Attention, votre modèle a été redimensionné car il est trop grand.<br> Nous vous conseillons de le modifier puis de le re-déposer sur notre site.
+                        </div>
+                    @elseif($model->state == "2" && !session()->has('resize'))
+                        <div class="alert alert-danger text-center warning-msg">
+                            Attention, votre objet est peut-être trop petit ou trop fin pour être imprimer.<br> Veuillez modifier son échelle ou re-déposer votre modèle une fois modifié.
+                        </div>
+                    @else
+                        <div class="alert alert-danger text-center warning-msg hide">
+                        </div>
+                    @endif
+                    <!-- end warning -->
+            </div>
+        </div>
+
+        <div class="row row-eq-height">
+            <div class="col-md-6">
+                <a href="" class="btn btn-danger delete_model_btn" data-toggle="modal" data-target="#delete-model-modal" id="delete"><span class="glyphicon glyphicon-remove white" aria-hidden="true"></span>  Supprimer</a>
+
+            </div>
+            <div class="col-md-6">
+                <div class="pull-right">
+                    <p class="form-control-static"><b class="black">Prix unitaire : <span id="price">{{ $model->price }}</span> €</b></p>
+                    <br>
+                    <input type="submit" class="btn btn-lg btn-print" form="form-new-order" value="Imprimer">
+                </div>
             </div>
         </div>
 
     </div>
     <div class="footer-handler"></div>
+
+    <!-- delete modale modal -->
+    <div aria-hidden="true" aria-labelledby="delete-model-modal" role="dialog" tabindex="-1" id="delete-model-modal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Supprimer</h4>
+                </div>
+                <div class="modal-body">
+                    <form class="form-signin wow fadeInUp" method="GET" action="{{ url('/delete-model/'.$model->id) }}">
+                            <p>Voulez-vous vraiment supprimer ce modèle ?</p>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-dismiss="modal">Annuler</button>
+                    <button class="btn btn-danger" type="submit">Supprimer</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section('script')
@@ -165,6 +185,7 @@
         var scale_min = parseFloat($('#minscale').val());
         var scale_max = parseFloat($('#maxscale').val());
         var file = $('#file').val();
+        var timerTyping = null;
 
         createSlider(scale, scale_min, scale_max);
 
@@ -240,15 +261,9 @@
 
         });
 
-        $('#input-title').on('change keyup', function(){
-            updateModel();
-        });
-
-        $('#delete').on('click',function(e){
-            var answer=confirm('Voulez vous vraiment supprimer ce modèle ?');
-            if(!answer){
-                e.preventDefault();
-            }
+        $('#input-title').keydown(function(){
+               clearTimeout(timerTyping);
+               timerTyping = setTimeout(updateModel, 700)
         });
 
         $( document ).ready(function()
@@ -298,9 +313,29 @@
                 $('#state').val(result.data.code);
                 $('.unit').text(result.data.opts.unit);
 
+                // show warning if needed
+                if(result.data.code === 2)
+                {
+                    $(".warning-msg").html("");
+                    $(".warning-msg").html("Attention, votre objet est peut-être trop petit ou trop fin pour être imprimer.<br> Veuillez modifier son échelle ou re-déposer votre modèle une fois modifié.");
+                    $(".warning-msg").removeClass("hide");
+                }
+                else if(result.data.code === 1)
+                {
+                    $(".warning-msg").html("");
+                    $(".warning-msg").html("Attention, votre modèle a été redimensionné car il est trop grand.<br> Veuillez modifier son échelle ou re-déposer votre modèle une fois modifié.");
+                    $(".warning-msg").removeClass("hide");
+                }
+                else
+                {
+                    $(".warning-msg").removeClass("hide").addClass("hide");
+                    $(".warning-msg").html("");
+                }
                 cb(result.data);
             });
         }
+
+        var update_popup = "<div class=\"alert alert-success alert-dismissible alert-fade text-center update_popup \">Modifications enregistrées</div>";
 
         function updateModel()
         {
@@ -330,7 +365,14 @@
                 contentType: "application/json; charset=UTF-8"
             })
             .done(function( data ) {
-                $('#update-title').text('Modifications enregistrées')
+                if( !$('#update_popup').is(':visible'))
+                {
+                    $('#update_popup').show();
+                    setTimeout(function()
+                    {
+                        $('#update_popup').fadeOut(500);
+                    }, 1500);
+                }
             });
         }
 
