@@ -82,6 +82,9 @@ Route::group(['middleware' => 'auth'], function () {
 
         // Ajax Check dimensions
         Route::post('/check-dimensions', 'AjaxController@postCheckDimensions');
+
+        // Ajax Save screenshot
+        Route::post('/save-image', 'AjaxController@postSaveImage');
     });
 
     // Utilisateurs possède la commande

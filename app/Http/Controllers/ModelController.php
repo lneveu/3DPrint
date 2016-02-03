@@ -173,7 +173,10 @@ class ModelController extends Controller
         $model = Model::findOrFail($id);
         $order = $model->order;
         if(!is_null($order)) $order->delete();
+        // remove file
         unlink($model->file);
+        // remove img
+        unlink(public_path().$model->img);
         $model->delete();
 
         return redirect('/models')->with(['ok' => 'Votre modèle a bien été supprimé.']);

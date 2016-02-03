@@ -79,36 +79,33 @@ class AjaxController extends Controller
     {
         if($request->ajax() && $request->has('img') && $request->has('id'))
         {
-            // Retrieve img
-            $file = $request->file('img');
-            $fileName = pathinfo($file->getClientOriginalName(),PATHINFO_FILENAME);
-            $originalName = $fileName;
-            $extension = $request->file('file')->getClientOriginalExtension();
-            $fileName .= ".".$extension;
+            $imgbase64 = $request->get('img');
+            $id_model = $request->get('id');
 
-            $id = \Auth::user()->id;
-            $path = storage_path().'/models/'.$id.'/';
-            if(!is_dir($path)) mkdir($path);
+            // decode image
+            $decodedData = base64_decode(preg_replace('#^data:image/\w+;base64,#i', '', $imgbase64));
 
-            // Rename if file exists
-            $i = 1;
-            while(file_exists($path.$fileName))
-            {
-                $actual_name = $originalName.$i;
-                $fileName = $actual_name.".".$extension;
-                $i++;
-            }
+            // path
+            $id_user = \Auth::user()->id;
+            $path = public_path().'/models-thumb/'.$id_user.'/';
+            if(!is_dir($path)) mkdir($path, 0777, true);
 
-            // Save file
-            $request->file('file')->move($path, $fileName);
+            // retrieve model filename
+            $model = Model::findOrFail($id_model);
 
-            $id = $request->get('id');
-            $model = Model::findOrFail($id);
+            // get dirname & filename
+            $filename = pathinfo($model->file, PATHINFO_FILENAME);
 
+            // write file
+            file_put_contents($path.$filename.".png", $decodedData);
+
+            // update bdd
+            $model->img = '/models-thumb/'.$id_user.'/'.$filename.".png";
+            $model->save();
 
             return response()->json([
-                'success' => true,
-                'data' => $result
+                'success' => true
+            , "path" => $path.$filename.".png"
             ], 200);
         }
         return response()->json([

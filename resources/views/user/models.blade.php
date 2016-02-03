@@ -41,7 +41,11 @@
                                 <div class="caption">
                                     <h3 class="name_model center">{{ $model->title }}</h3>
                                 </div>
-                                <img src="/img/default.png" alt="Default image">
+                                @if($model->img == "")
+                                    <img src="/models-thumb/default.png" alt="{{ $model->title }}">
+                                @else
+                                    <img src="{{ $model->img }}" alt="{{ $model->title }}">
+                                @endif
                                 <div class="caption">
                                     <p>{{ date_format($model->updated_at, 'd / m / Y') }}<span class="date_model hide">{{ $model->updated_at->timestamp }}</span><a href="/edit-model/{{ $model->id }}" class="btn btn-orange pull-right" role="button">Éditer</a></p>
                                 </div>

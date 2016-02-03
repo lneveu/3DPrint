@@ -31,7 +31,13 @@
                                     <td colspan="2">{{ $model->title }}</td>
                                 </tr>
                                 <tr class="bd-top">
-                                    <td><img src="/img/default.png" alt="Default image" height="125" width="125"></td>
+                                    <td>
+                                        @if($model->img == "")
+                                            <img src="/models-thumb/default.png" alt="{{ $model->title }}" height="150" width="240">
+                                        @else
+                                            <img src="{{ $model->img }}" alt="{{ $model->title }}" height="150" width="240">
+                                        @endif
+                                    </td>
                                     <td>
                                         <table>
                                         <tr>

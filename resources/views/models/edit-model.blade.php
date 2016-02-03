@@ -67,11 +67,11 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3" for="scale">Échelle</label>
-                        <div class="col-md-5">
+                        <label class="col-md-3 col-xs-12" for="scale">Échelle</label>
+                        <div class="col-md-5 col-xs-9">
                             <div id="soft" class="noUi-target noUi-ltr noUi-horizontal noUi-background"></div><br/><br/><br/>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-2 col-xs-3">
                             <input type="number" id="input-format" class="form-control" step="0.01" name="scale" value="{{ $model->scale }}">
                         </div>
                     </div>
@@ -91,17 +91,17 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-4">
                             <label>Longueur</label>
                             <p class="form-control-static"><span id="length">{{ $model->length }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-4">
                             <label>Largeur</label>
                             <p class="form-control-static"><span id="width">{{ $model->width }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-4">
                             <label>Hauteur</label>
                             <p class="form-control-static"><span id="height">{{ $model->height }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
@@ -109,12 +109,12 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-4">
                             <label>Surface</label>
                             <p class="form-control-static"><span id="surface">{{ $model->surface }}</span> <span class="unit">{{ $model->unit }}</span>²</p>
                         </div>
 
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-4">
                             <label>Volume</label>
                             <p class="form-control-static"><span id="volume">{{ $model->volume }}</span> <span class="unit">{{ $model->unit }}</span>³</p>
                         </div>
@@ -148,6 +148,7 @@
         </div>
 
     </div>
+    <div class="footer-handler"></div>
 @stop
 
 @section('script')
@@ -250,12 +251,28 @@
             }
         });
 
-        // load viewer
         $( document ).ready(function()
         {
+            // load viewer
             var viewer = new PaperViewer();
-            console.log(location.origin+"/file/"+$('#model-id').val());
-            viewer.init("viewer", location.origin+"/file/"+$('#model-id').val(), $('#ext').val());
+            viewer.init("viewer", location.origin+"/file/"+$('#model-id').val(), $('#ext').val(), function()
+            {
+                if( $("#img").val() === "" )
+                {
+                    var dataurl = viewer.takeScreenshot();
+                    // save image
+                    $.ajax({
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        type: "POST",
+                        url: "/save-image",
+                        data: JSON.stringify({'id': $('#model-id').val(), 'img': dataurl}),
+                        dataType: "json",
+                        contentType: "application/json; charset=UTF-8"
+                    });
+                }
+            });
 
         });
 
