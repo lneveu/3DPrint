@@ -69,6 +69,7 @@ class ModelController extends Controller
                    $model = new Model();
                    $model->user_id = $user->id;
                    $model->file = $path.$fileName;
+                   $model->extension = $extension;
                    $model->title = $fileName;
                    $model->length = $result->dimensions->length;
                    $model->width = $result->dimensions->width;

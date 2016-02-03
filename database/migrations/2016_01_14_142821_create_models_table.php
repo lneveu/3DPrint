@@ -16,6 +16,7 @@ class CreateModelsTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->string('file');
+            $table->string('extension');
             $table->string('img');
             $table->string('title');
             $table->float('length');
