@@ -82,10 +82,6 @@
 <script src="/js/sorttable.js"></script>
 <script src="//cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js"></script>
 
-<script src="/thingiview/javascripts/Three.js"></script>
-<script src="/thingiview/javascripts/plane.js"></script>
-<script src="/thingiview/javascripts/thingiview.js"></script>
-
 <script type="text/javascript" src="/js/parallax-slider/jquery.cslider.js"></script>
 <script type="text/javascript">
     $(function() {

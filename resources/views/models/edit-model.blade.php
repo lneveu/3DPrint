@@ -15,7 +15,7 @@
     <div class="container">
 
         <div class="row mar-b-50">
-            <div class="col-md-8">
+            <div class="col-md-6">
                 <form role="form" class="form-horizontal" method="POST" action="{{ url('/order/new') }}">
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}">
@@ -26,20 +26,21 @@
                     <input type="hidden" id="maxscale" value="{{ $model->scale_max }}">
                     <input type="hidden" id="scale" value="{{ $model->scale }}">
                     <input type="hidden" id="file" value="{{ $model->file }}">
+                    <input type="hidden" id="ext" value="{{ $model->extension }}">
                     <input type="hidden" id="img" value="{{ $model->img }}">
 
 
 
 
                     <div class="form-group">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <p><i>Dernière modification : le {{ $dateUpdate['day'] }} {{ $dateUpdate['month'] }} {{ $dateUpdate['year'] }} à {{ $model->updated_at->toTimeString() }}</i></p>
                         </div>
                     </div>
 
                     @if(session()->has('resize'))
                         <div class="form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <p class="error">{{ session('resize') }}</p>
                             </div>
                         </div>
@@ -47,14 +48,14 @@
 
                     @if($errors->first->has('state'))
                         <div class="form-group">
-                            <div class="col-md-6">
+                            <div class="col-md-12">
                                 <p class="error">{{ $errors->first->get('state') }}</p>
                             </div>
                         </div>
                     @endif
 
                     <div class="form-group">
-                        <label class="col-md-1" for="title">Titre</label>
+                        <label class="col-md-3" for="title">Titre</label>
                         <div class="col-md-5">
                             <input type="text" id="input-title" class="form-control" name="title" placeholder="Titre" value="{{ $model->title }}" min="5" autofocus>
                         </div>
@@ -66,7 +67,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-1" for="scale">Échelle</label>
+                        <label class="col-md-3" for="scale">Échelle</label>
                         <div class="col-md-5">
                             <div id="soft" class="noUi-target noUi-ltr noUi-horizontal noUi-background"></div><br/><br/><br/>
                         </div>
@@ -76,7 +77,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-1" for="scale">Unité</label>
+                        <label class="col-md-3" for="scale">Unité</label>
                         <div class="col-md-5">
                             <div class="radio radio-info radio-inline">
                                 <input type="radio" id="inlineRadio1" value="mm" name="unit" @if($model->unit == "mm"){{"checked"}}@endif>
@@ -90,17 +91,17 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Longueur</label>
                             <p class="form-control-static"><span id="length">{{ $model->length }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Largeur</label>
                             <p class="form-control-static"><span id="width">{{ $model->width }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Hauteur</label>
                             <p class="form-control-static"><span id="height">{{ $model->height }}</span> <span class="unit">{{ $model->unit }}</span></p>
                         </div>
@@ -108,24 +109,19 @@
                     </div>
 
                     <div class="form-group">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Surface</label>
                             <p class="form-control-static"><span id="surface">{{ $model->surface }}</span> <span class="unit">{{ $model->unit }}</span>²</p>
                         </div>
 
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <label>Volume</label>
                             <p class="form-control-static"><span id="volume">{{ $model->volume }}</span> <span class="unit">{{ $model->unit }}</span>³</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <div class="col-md-3">
+                        <div class="col-md-4">
                             <p class="form-control-static"><b class="black">Prix unitaire : <span id="price">{{ $model->price }}</span> €</b></p>
-                        </div>
-
-                        <div class="col-md-3"></div>
-
-                        <div class="col-md-3">
                         </div>
                     </div>
                     <div class="form-group">
@@ -146,8 +142,8 @@
 
             </div>
 
-            <div class="col-md-4">
-                <div id="viewer" style="width:400px;height:400px"></div>
+            <div class="col-md-6">
+                <div id="viewer"></div>
             </div>
         </div>
 
@@ -155,6 +151,12 @@
 @stop
 
 @section('script')
+    <script src="/js/paperviewer/three.min.js"></script>
+    <script src="/js/paperviewer/NormalControls.js"></script>
+    <script src="/js/paperviewer/OBJLoader.js"></script>
+    <script src="/js/paperviewer/STLLoader.js"></script>
+    <script src="/js/paperviewer/paperviewer.js"></script>
+
     <script>
         var softSlider = document.getElementById('soft');
 
@@ -248,17 +250,14 @@
             }
         });
 
+        // load viewer
+        $( document ).ready(function()
+        {
+            var viewer = new PaperViewer();
+            console.log(location.origin+"/file/"+$('#model-id').val());
+            viewer.init("viewer", location.origin+"/file/"+$('#model-id').val(), $('#ext').val());
 
-        window.onload = function() {
-            thingiurlbase = "/thingiview/javascripts";
-            thingiview = new Thingiview("viewer");
-            thingiview.setObjectColor('#045FB4');
-            thingiview.setBackgroundColor('#6E6E6E');
-            thingiview.setShowPlane(false);
-            thingiview.initScene();
-            thingiview.loadSTL(location.origin+"/file/"+$('#model-id').val());
-
-        };
+        });
 
         function checkDimensions(cb)
         {

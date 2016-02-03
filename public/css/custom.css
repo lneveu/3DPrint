@@ -126,6 +126,16 @@ body {
 }
 /* end UPLOADMODEL */
 
+/* EDIT MODEL */
+
+#viewer {
+    background: #1b1c1e;
+    width: 100%;
+    height: 350px;
+    cursor: default !important;
+}
+/* end EDIT MODEL */
+
 /* CONTACT */
 .contact-message-area {
     resize: vertical;
