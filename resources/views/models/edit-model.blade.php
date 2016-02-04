@@ -372,7 +372,7 @@
                     setTimeout(function()
                     {
                         $('#update_popup').fadeOut(500);
-                    }, 1500);
+                    }, 2000);
                 }
             });
         }

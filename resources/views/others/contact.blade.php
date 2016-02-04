@@ -27,6 +27,14 @@
                 <br>
               </address>
             </section>
+            <section class="contact-infos">
+              <h4 class="title custom-font text-black">
+                Téléphone
+              </h4>
+              <address>
+                +33 (0) 1.44.76.54.40
+              </address>
+            </section>
           </div>
           <div class="col-lg-7 col-sm-7 address">
             @if(session()->has('ok'))
