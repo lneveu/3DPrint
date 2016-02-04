@@ -41,8 +41,6 @@
                         </div>
                     @endif
 
-                    <div id="update_popup" class="alert alert-success text-center" style="display:none;">Modifications enregistrées</div>
-
                     <div class="form-group">
                         <div class="col-md-12">
                             <p><i>Dernière modification : le {{ $dateUpdate['day'] }} {{ $dateUpdate['month'] }} {{ $dateUpdate['year'] }} à {{ $model->updated_at->toTimeString() }}</i></p>
@@ -50,14 +48,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3" for="title">Titre</label>
+                        <label class="col-md-2" for="title">Titre</label>
                         <div class="col-md-5">
                             <input type="text" id="input-title" class="form-control" name="title" placeholder="Titre" value="{{ $model->title }}" min="5" autofocus>
+                        </div>
+                        <div class="col-md-5">
+                            <div id="update_popup" class="alert alert-success text-center" style="display:none;">Modifications enregistrées</div>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-12 col-xs-12" for="scale">Échelle</label>
+                        <label class="col-md-2 col-sm-12 col-xs-12" for="scale">Échelle</label>
                         <div class="col-md-5 col-xs-9">
                             <div id="soft" class="noUi-target noUi-ltr noUi-horizontal noUi-background"></div><br/><br/><br/>
                         </div>
@@ -67,7 +68,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-12" for="scale">Unité</label>
+                        <label class="col-md-2 col-sm-12" for="scale">Unité</label>
                         <div class="col-md-5 col-sm-12">
                             <div class="radio radio-info radio-inline">
                                 <input type="radio" id="inlineRadio1" value="mm" name="unit" @if($model->unit == "mm"){{"checked"}}@endif>
@@ -132,12 +133,12 @@
             </div>
         </div>
 
-        <div class="row row-eq-height">
-            <div class="col-md-6">
+        <div class="row mar-b-50 row-eq-height">
+            <div class="col-md-6 col-xs-5">
                 <a href="" class="btn btn-danger delete_model_btn" data-toggle="modal" data-target="#delete-model-modal" id="delete"><span class="glyphicon glyphicon-remove white" aria-hidden="true"></span>  Supprimer</a>
 
             </div>
-            <div class="col-md-6">
+            <div class="col-md-6 col-xs-7">
                 <div class="pull-right">
                     <p class="form-control-static"><b class="black">Prix unitaire : <span id="price">{{ $model->price }}</span> €</b></p>
                     <br>
