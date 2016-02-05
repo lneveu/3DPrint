@@ -4,7 +4,7 @@ var PythonShell   = require('python-shell')
     , path        = require('path')
     , utils       = require('../utils.js')
     , SCRIPT_PATH = __dirname + '/stl_normalize'
-    , STLLoader   = require('../threejs/STLLoader.js')
+    , STLExporter = require('../threejs/STLExporter.js')
     , ThreeUtils  = require('../threejs/ThreeUtils.js')
     , THREE       = require('three')
     , config      = require('../config.json')
@@ -26,14 +26,14 @@ module.exports =
             }
             else
             {
-                var ext = path.extname(file);
-                if(ext.toLowerCase() === '.stl')
+                var ext = path.extname(file).toLowerCase();
+                if(ext === '.stl' || ext === '.obj')
                 {
-                    verif_nonmanifold(file, function(result) // verif non-manifold
+                    verif_nonmanifold(file, ext, function(result) // verif non-manifold
                     {
                       if(result.code === 0) // object valid
                       {
-                        verif_dimensions(file, opts, function(result) // verif and get dimensions
+                        verif_dimensions(file, ext, opts, function(result) // verif and get dimensions
                         {
                           cb(result);
                         });
@@ -44,10 +44,6 @@ module.exports =
                       }
                     });
                 }
-                /*else if(ext.toLowerCase() === '.obj')
-                {
-                  // not implemented yet
-                }*/
                 else
                 {
                   cb({ "status" : "invalid format", "code" : -4 });
@@ -70,10 +66,18 @@ module.exports =
           }
           else
           {
-            verif_dimensions(file, opts, function(result) // verif and get dimensions
+            var ext = path.extname(file).toLowerCase();
+            if(ext === '.stl' || ext === '.obj')
             {
-              cb(result);
-            });
+              verif_dimensions(file, ext, opts, function(result) // verif and get dimensions
+              {
+                cb(result);
+              });
+            }
+            else
+            {
+              cb({ "status" : "invalid format", "code" : -4 });
+            }
           }
       });
     }
@@ -83,8 +87,21 @@ module.exports =
 /**
  * Run "stl_normalize" script
  */
-var verif_nonmanifold = function(file, cb)
+var verif_nonmanifold = function(file, ext, cb)
 {
+    if(ext === ".obj")
+    {
+      var geometry = ThreeUtils.getGeometryFromOBJ(file);
+      // tmp scene to export
+      var tmp_scene = new THREE.Scene().add(new THREE.Mesh(geometry));
+
+      // create tmp stl file for python script
+      var stl_string = STLExporter.parse(tmp_scene);
+
+      file = __dirname + '\\tmp-stl\\' + utils.checksum(stl_string) + ".stl";
+      fs.writeFileSync(file, stl_string);
+    }
+
     var options =
     {
         scriptPath : SCRIPT_PATH
@@ -94,6 +111,9 @@ var verif_nonmanifold = function(file, cb)
     // call python scripts
     PythonShell.run('stl_normalize.py', options, function (err, results)
     {
+        // if obj -> delete temporary stl file
+        if(ext === ".obj") fs.unlinkSync(file);
+
         // TODO séparer et identifier les différents types d'erreurs
         if (err) // invalid model
         {
@@ -111,63 +131,48 @@ var verif_nonmanifold = function(file, cb)
 /**
  * Check and return dimensions (rescale model if needed)
  */
-var verif_dimensions = function(file, opts, cb)
+var verif_dimensions = function(file, ext, opts, cb)
 {
-  var ext            = path.extname(file)
-    , geometry       = null
+  var geometry       = null
     , price          = null
     , displayableDim = null
     ;
 
-  if(ext.toLowerCase() === '.stl')
+  if(ext === ".stl")
   {
-    // parse STL file
-    var buf = fs.readFileSync(file);
-    geometry = STLLoader.parse(buf);
+    geometry = ThreeUtils.getGeometryFromSTL(file);
 
-    if(geometry.type === "BufferGeometry") // we need to transform BufferGeometry to Geometry
-    {
-      var mesh = new THREE.Mesh(geometry);
-      var bbox = new THREE.Box3().setFromObject(mesh);
-      geometry.boundingBox = bbox;
-      geometry = new THREE.Geometry().fromBufferGeometry(geometry);
-    }
-
-    var origin_dim = getDimensions(geometry); // get origin dimensions
-    maxminscale = getMinMaxScale(origin_dim, opts.unit); // get MAX & MIN scale of origin dimensions according to unit
-
-    if( isTooBig(origin_dim, opts) ) // model is too big
-    {
-      opts.scale = maxminscale.max; // set current scale to maxscale
-      dim = applyScale(origin_dim, opts.scale); // rescale the model with maxscale (with current unit)
-      price = calculatePrice(dim.volume, opts.unit); // calculate price according to the volume
-
-      cb({ "status" : "valid model after rescale (too big)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
-    }
-    else if( isTooSmall(origin_dim, opts) ) // model is too small
-    {
-      opts.scale = maxminscale.min; // set current scale to minscale
-      dim = applyScale(origin_dim, opts.scale);
-      price = calculatePrice(dim.volume, opts.unit);
-
-      cb({ "status" : "valid model after rescale (too small)", "code" : 2, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
-    }
-    else
-    {
-      dim = applyScale(origin_dim, opts.scale);
-      price = calculatePrice(dim.volume, opts.unit);
-
-      cb({ "status" : "valid model", "code" : 0, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
-    }
   }
-  /*else if(ext.toLowerCase() === '.obj')
+  else if( ext === ".obj")
   {
-    // not implemented yet
-    cb({ "status" : "invalid format", "code" : -4 });
-  }*/
+    geometry = ThreeUtils.getGeometryFromOBJ(file);
+  }
+
+  var origin_dim = getDimensions(geometry); // get origin dimensions
+  maxminscale = getMinMaxScale(origin_dim, opts.unit); // get MAX & MIN scale of origin dimensions according to unit
+
+  if( isTooBig(origin_dim, opts) ) // model is too big
+  {
+    opts.scale = maxminscale.max; // set current scale to maxscale
+    dim = applyScale(origin_dim, opts.scale); // rescale the model with maxscale (with current unit)
+    price = calculatePrice(dim.volume, opts.unit); // calculate price according to the volume
+
+    cb({ "status" : "valid model after rescale (too big)", "code" : 1, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+  }
+  else if( isTooSmall(origin_dim, opts) ) // model is too small
+  {
+    opts.scale = maxminscale.min; // set current scale to minscale
+    dim = applyScale(origin_dim, opts.scale);
+    price = calculatePrice(dim.volume, opts.unit);
+
+    cb({ "status" : "valid model after rescale (too small)", "code" : 2, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min, "opts" : opts});
+  }
   else
   {
-    cb({ "status" : "invalid format", "code" : -4 });
+    dim = applyScale(origin_dim, opts.scale);
+    price = calculatePrice(dim.volume, opts.unit);
+
+    cb({ "status" : "valid model", "code" : 0, "dimensions" : dim, "price" : price, "maxscale" : maxminscale.max, "minscale" : maxminscale.min,  "opts" : opts});
   }
 };
 
