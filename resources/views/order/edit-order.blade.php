@@ -56,7 +56,7 @@
                                             </td>
                                             <td>
                                                 <div class="col-md-6">
-                                                    <input type="number" id="quantity" class="form-control" name="quantity" value="{{ $order->quantity }}" min="1">
+                                                    <input type="number" id="quantity" class="form-control" step="1" name="quantity" value="{{ $order->quantity }}" min="1">
                                                 </div>
                                             </td>
                                         </tr>
@@ -157,6 +157,7 @@
             </form>
         </div>
     </div>
+    <div class="footer-handler"></div>
 @stop
 
 @section('script')
