@@ -100,5 +100,11 @@
 @include('auth.login')
 @yield('script')
 
+<script>
+    // Remove #... from url (due to fb and google redirection)
+    history.pushState("", document.title, window.location.pathname
+            + window.location.search);
+</script>
+
 </body>
 </html>
