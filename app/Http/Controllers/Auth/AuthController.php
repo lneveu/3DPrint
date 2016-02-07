@@ -71,7 +71,7 @@ class AuthController extends Controller
         $user = User::firstOrCreate(['email' => $user->email]);
         Auth::login($user, true);
 
-        return redirect('/');
+        return redirect()->intended('/');
 
     }
 
@@ -83,7 +83,7 @@ class AuthController extends Controller
         $user = User::firstOrCreate(['email' => $user->email]);
         Auth::login($user, true);
 
-        return redirect('/');
+        return redirect()->intended('/');
 
     }
 }
