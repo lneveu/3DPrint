@@ -39,6 +39,11 @@ Route::get('/privacy', function(){
 Route::get('/contact', 'ContactController@getContact');
 Route::post('/contact', 'ContactController@postContact');
 
+// Login facebook
+Route::get('/login/facebook', 'Auth\AuthController@getLoginFacebook');
+// Login google
+Route::get('/login/google', 'Auth\AuthController@getLoginGoogle');
+
 // Utilisateurs connect�s seulement
 Route::group(['middleware' => 'auth'], function () {
     // Logout

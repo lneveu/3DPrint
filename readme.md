@@ -60,7 +60,7 @@ Générer les tables:
 
   $ php artisan migrate
   
-###V) Configurer le driver de mail
+###V) Configurer le driver de mail + social connection url (il faut que l'url de redirection soit configurer dans les applications (fb, google) également)
 Dans le fichier .env, remplacer
 
 	MAIL_DRIVER=mailgun
@@ -74,6 +74,9 @@ Et ajouter:
 	
 	MAILGUN_DOMAIN=sandbox0cab25f24064433890b3338acf5d51a8.mailgun.org
 	MAILGUN_SECRET=key-6f1f977bf637f6a9e3532a38fe012573
+
+	FACEBOOK_REDIRECT={Your domain}/login/facebook
+    GOOGLE_REDIRECT={Your domain}/login/google
 
 ###VI) Clé et droits
 Générer l'APP_KEY:

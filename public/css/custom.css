@@ -330,3 +330,28 @@ span.error{
     color: #475168;
 }
 /* end 3DPRINT */
+
+
+.btn-facebook{
+    color: #fff !important;
+    background-color: #3b5998;
+    border-color: rgba(0,0,0,0.2);
+}
+.btn-facebook:hover{
+    text-decoration: inherit !important;
+    color: #fff;
+    background-color: #2d4373;
+    border-color: rgba(0,0,0,0.2);
+}
+
+.btn-google{
+    color: #fff !important;
+    background-color: #dd4b39;
+    border-color: rgba(0,0,0,0.2);
+}
+.btn-google:hover{
+    text-decoration: inherit !important;
+    color: #fff;
+    background-color: #c23321;
+    border-color: rgba(0,0,0,0.2);
+}

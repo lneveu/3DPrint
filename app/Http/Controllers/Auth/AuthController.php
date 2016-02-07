@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Requests\Request;
 use App\User;
+use Illuminate\Support\Facades\Auth;
+use Laravel\Socialite\Facades\Socialite;
 use Validator;
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
@@ -58,5 +61,29 @@ class AuthController extends Controller
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
         ]);
+    }
+
+    public function getLoginFacebook(\Illuminate\Http\Request $request)
+    {
+        if( !$request->has('code')) return Socialite::with('facebook')->redirect();
+
+        $user = Socialite::driver('facebook')->user();
+        $user = User::firstOrCreate(['email' => $user->email]);
+        Auth::login($user, true);
+
+        return redirect('/');
+
+    }
+
+    public function getLoginGoogle(\Illuminate\Http\Request $request)
+    {
+        if( !$request->has('code')) return Socialite::with('google')->redirect();
+
+        $user = Socialite::driver('google')->user();
+        $user = User::firstOrCreate(['email' => $user->email]);
+        Auth::login($user, true);
+
+        return redirect('/');
+
     }
 }

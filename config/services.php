@@ -35,4 +35,17 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+    'facebook' => [
+        'client_id' => '1472761816354669',
+        'client_secret' => '7a69093fb7a64b4dd966f3d7ef5d6238',
+        'redirect' => env('FACEBOOK_REDIRECT'),
+    ],
+
+    'google' => [
+        'client_id' => '185686319224-jd7r8gta9jlqmu5m55kf0ha0r878s3vf.apps.googleusercontent.com',
+        'client_secret' => 'KsmcEWmz3Iw_djDw5wEuSn6x',
+        'redirect' => env('GOOGLE_REDIRECT'),
+    ],
+
+
 ];

@@ -11,6 +11,14 @@
 
                     {!! csrf_field() !!}
                     <div class="login-wrap">
+                        <a href="{{ url('/login/facebook') }}" class="btn btn-block btn-social btn-facebook">
+                            <i class="fa fa-facebook"></i> Se connecter avec Facebook
+                        </a><br/>
+
+                        <a href="{{ url('/login/google') }}" class="btn btn-block btn-social btn-google">
+                            <i class="fa fa-google-plus"></i> Se connecter avec Google
+                        </a><br/>
+
                         <input type="hidden" name="login" value="1">
                         @if($errors->default->has('email') && (array_key_exists('remember', old()) || old('login')))<p class="error">{{ $errors->default->first('email') }}</p>@endif
                         <input type="email" class="form-control @if($errors->has('email') && (array_key_exists('remember', old()) || old('login'))){{ "error-border" }}@endif" name="email" placeholder="E-mail" value="{{ old('email') }}">
@@ -32,8 +40,8 @@
                                  <a href="{{ url('/register') }}">Créer un compte gratuitement</a>
                             </span>
                         </div>
-
                         <button class="btn btn-lg btn-login btn-block" type="submit">Se connecter</button>
+
                     </div>
 
                 </form>
