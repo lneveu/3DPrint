@@ -34,7 +34,7 @@
 
     .head-section .nav li ul.dropdown-menu li a {
         margin-left: 0px;
-        color: #999!important; ;
+        color: rgb(0,58,129) !important;
     }
 
     .head-section .nav li .dropdown-menu li a:hover, .head-section .nav li .dropdown-menu li.active a {
@@ -116,7 +116,8 @@
     }
 
     .head-section .nav li .dropdown-menu li a:hover {
-        color: #48C9B0 !important;
+      color: #fff!important;
+      background-color: rgb(0,58,129) !important;
     }
 
     .navbar-brand {

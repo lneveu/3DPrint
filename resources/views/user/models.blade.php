@@ -42,9 +42,9 @@
                                     <h3 class="name_model center">{{ $model->title }}</h3>
                                 </div>
                                 @if($model->img == "")
-                                    <img src="/models-thumb/default.png" alt="{{ $model->title }}">
+                                    <a href="/edit-model/{{ $model->id }}"><img src="/models-thumb/default.png" alt="{{ $model->title }}"></a>
                                 @else
-                                    <img src="{{ $model->img }}" alt="{{ $model->title }}">
+                                    <a href="/edit-model/{{ $model->id }}"><img src="{{ $model->img }}" alt="{{ $model->title }}"></a>
                                 @endif
                                 <div class="caption">
                                     <p>{{ date_format($model->updated_at, 'd / m / Y') }}<span class="date_model hide">{{ $model->updated_at->timestamp }}</span><a href="/edit-model/{{ $model->id }}" class="btn btn-orange pull-right" role="button">Éditer</a></p>

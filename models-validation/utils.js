@@ -1,4 +1,6 @@
 /* jshint laxcomma:true, laxbreak:true*/
+var crypto = require('crypto');
+
 module.exports =
 {
   /**
@@ -17,5 +19,16 @@ module.exports =
   , round2 : function(val)
   {
     return parseFloat(val.toFixed(2));
+  }
+
+  /**
+   * Get str checksum
+   */
+  , checksum : function(str)
+  {
+    return crypto
+        .createHash('md5')
+        .update(str, 'utf8')
+        .digest('hex');
   }
 };

@@ -105,7 +105,6 @@ class AjaxController extends Controller
 
             return response()->json([
                 'success' => true
-            , "path" => $path.$filename.".png"
             ], 200);
         }
         return response()->json([

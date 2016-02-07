@@ -1,5 +1,9 @@
 /* jshint laxcomma:true, laxbreak:true*/
-var THREE = require('three');
+var THREE       = require('three')
+  , fs          = require('fs')
+  , OBJLoader   = require('./OBJLoader.js')
+  , STLLoader   = require('./STLLoader.js')
+  ;
 
 module.exports =
 {
@@ -34,6 +38,42 @@ module.exports =
       area += areaofT(P, Q, R);
     }
     return area;
+  }
+
+  /**
+   * Get ThreeJS geometry from OBJ file
+   */
+  , getGeometryFromOBJ : function(file)
+  {
+    var buf = fs.readFileSync(file);
+    var object3d = OBJLoader.parse(buf.toString("UTF-8"));
+
+    if(object3d.children.length > 0)
+    {
+      var geometry =  new THREE.Geometry().fromBufferGeometry(object3d.children[0].geometry);
+      geometry.computeBoundingBox();
+      return geometry;
+    }
+    else
+    {
+      return {};
+    }
+  }
+
+  /**
+   * Get ThreeJS geometry from STL file
+   */
+  , getGeometryFromSTL : function(file)
+  {
+    var buf = fs.readFileSync(file);
+    var geometry = STLLoader.parse(buf);
+
+    if(geometry.type === "BufferGeometry") // we need to transform BufferGeometry to Geometry
+    {
+      geometry = new THREE.Geometry().fromBufferGeometry(geometry);
+      geometry.computeBoundingBox();
+    }
+    return geometry;
   }
 };
 
