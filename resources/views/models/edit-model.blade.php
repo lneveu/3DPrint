@@ -159,13 +159,13 @@
                     <h4 class="modal-title">Supprimer</h4>
                 </div>
                 <div class="modal-body">
-                    <form class="form-signin wow fadeInUp" method="GET" action="{{ url('/delete-model/'.$model->id) }}">
+                    <form id="delete-model-form" class="form-signin wow fadeInUp" method="GET" action="{{ url('/delete-model/'.$model->id) }}">
                             <p>Voulez-vous vraiment supprimer ce modèle ?</p>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-default" data-dismiss="modal">Annuler</button>
-                    <button class="btn btn-danger" type="submit">Supprimer</button>
+                    <button form="delete-model-form" class="btn btn-danger" type="submit">Supprimer</button>
                 </div>
             </div>
         </div>
